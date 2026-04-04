@@ -26,7 +26,13 @@ function loadMakes() {
       makeSelect.innerHTML = '<option value="" disabled selected>Select Make</option>';
       document.getElementById("model").innerHTML = '<option value="" disabled selected>Select Model</option>';
 
-      const sortedMakes = data.Results.sort((a, b) => a.MakeName.localeCompare(b.MakeName));
+      const sortedMakes = data.Results.sort((a, b) => {
+        const nameA = (a.MakeName || "").trim().toUpperCase();
+        const nameB = (b.MakeName || "").trim().toUpperCase();
+        if (nameA < nameB) return -1;
+        if (nameA > nameB) return 1;
+        return 0;
+      });
       sortedMakes.forEach(m => {
         const option = document.createElement("option");
         option.value = m.MakeName;
@@ -49,7 +55,13 @@ function loadModels() {
       const modelSelect = document.getElementById("model");
       modelSelect.innerHTML = '<option value="" disabled selected>Select Model</option>';
 
-      const sortedModels = data.Results.sort((a, b) => a.Model_Name.localeCompare(b.Model_Name));
+      const sortedModels = data.Results.sort((a, b) => {
+        const nameA = (a.Model_Name || "").trim().toUpperCase();
+        const nameB = (b.Model_Name || "").trim().toUpperCase();
+        if (nameA < nameB) return -1;
+        if (nameA > nameB) return 1;
+        return 0;
+      });
       sortedModels.forEach(m => {
         const option = document.createElement("option");
         option.value = m.Model_Name;
@@ -164,3 +176,4 @@ function setupFAQ() {
     });
   });
 }
+
