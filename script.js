@@ -26,7 +26,8 @@ function loadMakes() {
       makeSelect.innerHTML = '<option value="" disabled selected>Select Make</option>';
       document.getElementById("model").innerHTML = '<option value="" disabled selected>Select Model</option>';
 
-      data.Results.forEach(m => {
+      const sortedMakes = data.Results.sort((a, b) => a.MakeName.localeCompare(b.MakeName));
+      sortedMakes.forEach(m => {
         const option = document.createElement("option");
         option.value = m.MakeName;
         option.textContent = m.MakeName;
@@ -48,7 +49,8 @@ function loadModels() {
       const modelSelect = document.getElementById("model");
       modelSelect.innerHTML = '<option value="" disabled selected>Select Model</option>';
 
-      data.Results.forEach(m => {
+      const sortedModels = data.Results.sort((a, b) => a.Model_Name.localeCompare(b.Model_Name));
+      sortedModels.forEach(m => {
         const option = document.createElement("option");
         option.value = m.Model_Name;
         option.textContent = m.Model_Name;
