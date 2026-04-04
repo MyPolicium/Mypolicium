@@ -1,0 +1,493 @@
+/* Custom Properties for Premium SaaS Theme (Stripe/Linear Inspired) */
+:root {
+  --primary-navy: #0f172a; /* Slate 900 for high-contrast, premium text */
+  --primary-blue: #6366f1; /* Indigo 500 for brand action */
+  --secondary-blue: #4f46e5; /* Indigo 600 */
+  
+  --background-color: #f8fafc; /* Slate 50 for ultra clean background */
+  --surface-color: #ffffff;
+  
+  --text-dark: #0f172a;
+  --text-muted: #475569; /* Slate 600 for reading comfort */
+  --text-light: #94a3b8; /* Slate 400 for structural text */
+  
+  --border-color: #e2e8f0; /* Crisp, light borders */
+  --border-focus: #c7d2fe;
+  
+  /* High-end Stripe-style diffused shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+  --shadow-card: 0 25px 50px -12px rgba(15, 23, 42, 0.08), 0 0 1px rgba(15, 23, 42, 0.15);
+  
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  /* Using system UI fonts alongside Inter for the ultimate polished feel */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-dark);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  /* Tighter letter spacing on headings looks more premium and modern */
+  font-family: 'Outfit', 'Inter', sans-serif;
+  color: var(--primary-navy);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+/* Header */
+header {
+  padding: 24px 5%;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+.brand-logo {
+  height: 28px; /* Slightly smaller, more refined logo size */
+  object-fit: contain;
+}
+
+/* Layout Container */
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 100px 24px 60px; /* Offset for absolute header */
+  width: 100%;
+}
+
+/* Hero Section */
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  margin-bottom: 80px;
+}
+
+@media (min-width: 900px) {
+  .hero {
+    flex-direction: row;
+    align-items: center; /* Center align items for balance */
+    gap: 80px;
+  }
+}
+
+.hero-content {
+  flex: 1;
+  max-width: 520px;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 24px;
+  letter-spacing: -0.03em;
+  color: var(--primary-navy);
+  line-height: 1.1;
+}
+
+.hero-subtitle {
+  font-size: 1.125rem;
+  color: var(--text-muted);
+  margin-bottom: 40px;
+  line-height: 1.7;
+}
+
+/* Trust Badges */
+.trust-badges {
+  display: flex;
+  gap: 32px;
+  margin-top: 40px;
+  border-top: 1px solid var(--border-color);
+  padding-top: 32px;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.badge svg {
+  width: 20px;
+  height: 20px;
+  color: var(--primary-blue);
+}
+
+/* Calculator Card - The high-end centerpiece */
+.calculator-wrapper {
+  flex: 1;
+  width: 100%;
+  max-width: 480px;
+}
+
+.card {
+  background: var(--surface-color);
+  padding: 40px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  position: relative;
+}
+
+/* Make it look like it's floating slightly over a background element */
+.card::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  right: -10px;
+  bottom: 10px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(79, 70, 229, 0.05));
+  border-radius: var(--radius-lg);
+  z-index: -1;
+}
+
+.form-group {
+  margin-bottom: 24px;
+  position: relative;
+}
+
+label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.label-help {
+  cursor: help;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
+  color: var(--text-light);
+  font-size: 0.75rem;
+  font-family: monospace;
+  background: var(--background-color);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  transition: all 0.2s;
+}
+
+.label-help:hover {
+  color: var(--primary-blue);
+  border-color: var(--primary-blue);
+}
+
+input, select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--primary-navy);
+  background-color: var(--surface-color);
+  transition: all 0.2s ease;
+  -webkit-appearance: none;
+  appearance: none;
+  box-shadow: var(--shadow-sm);
+}
+
+input:hover, select:hover {
+  border-color: #cbd5e1;
+}
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px var(--border-focus);
+}
+
+input::placeholder {
+  color: var(--text-light);
+  font-weight: 400;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  background-color: var(--primary-navy);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 8px;
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.2);
+}
+
+button:hover {
+  background-color: #1e293b;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(15, 23, 42, 0.25);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Results Section - Styled like a physical, polished receipt */
+.result {
+  display: none;
+  margin-top: 32px;
+  padding: 32px 24px;
+  background: var(--background-color);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  animation: slideInFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  position: relative;
+  overflow: hidden;
+}
+
+.result::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--primary-blue);
+}
+
+@keyframes slideInFade {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.result-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  letter-spacing: 0.05em;
+}
+
+.result-range {
+  font-size: 2.25rem;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  color: var(--primary-navy);
+  margin-bottom: 24px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.result-meta {
+  font-size: 0.875rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-muted);
+}
+
+.result-meta span {
+    color: var(--text-light);
+}
+
+.result-meta strong {
+    color: var(--primary-navy);
+    font-weight: 500;
+}
+
+.result-meta:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.result-note {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--border-color);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.result-note svg {
+  color: var(--primary-blue);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.result-disclaimer {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  margin-top: 24px;
+  line-height: 1.6;
+}
+
+/* Educational Sections */
+.info-section {
+  max-width: 800px;
+  margin: 0 auto 80px;
+}
+
+.info-section h2 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+  text-align: center;
+  letter-spacing: -0.02em;
+}
+
+.how-it-works-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 600px) {
+  .how-it-works-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.feature-box {
+  background: transparent;
+  padding: 32px 24px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+}
+
+.feature-box:hover {
+  background: var(--surface-color);
+  box-shadow: var(--shadow-md);
+  border-color: #cbd5e1;
+}
+
+.feature-box h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--primary-navy);
+}
+
+.feature-box p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+/* Accordion FAQ */
+.faq-item {
+  background: transparent;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 0;
+}
+
+.faq-item:first-child {
+    border-top: 1px solid var(--border-color);
+}
+
+.faq-question {
+  width: 100%;
+  text-align: left;
+  padding: 24px 0;
+  background: none;
+  border: none;
+  font-size: 1.125rem;
+  font-family: 'Inter', sans-serif;
+  color: var(--primary-navy);
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.faq-question:hover {
+  color: var(--primary-blue);
+  background: transparent;
+}
+
+.faq-icon {
+  transition: transform 0.2s ease;
+  color: var(--text-light);
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.faq-item.active .faq-icon {
+  transform: rotate(45deg);
+  color: var(--primary-navy);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+  color: var(--text-muted);
+  opacity: 0;
+}
+
+.faq-item.active .faq-answer {
+  padding: 0 0 24px 0;
+  max-height: 400px;
+  opacity: 1;
+}
+
+.faq-answer p {
+    line-height: 1.7;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 40px 24px;
+  color: var(--text-light);
+  font-size: 0.875rem;
+  margin-top: auto;
+  border-top: 1px solid var(--border-color);
+  background: white;
+}

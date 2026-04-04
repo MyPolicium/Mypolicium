@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyPolicium | Actual Cash Value Estimator</title>
+  
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <img src="mypolicium logo.webp" alt="MyPolicium Logo" class="brand-logo" onerror="this.src=''; this.alt='MyPolicium'; this.style.fontSize='1.5rem'; this.style.fontFamily='Outfit'; this.style.fontWeight='700'; this.style.color='var(--primary-navy)';">
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <!-- Hero & Calculator -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">What is your vehicle actually worth in a claim?</h1>
+        <p class="hero-subtitle">Insurance evaluations can feel like a black box. Our Actual Cash Value (ACV) estimator decodes depreciation and regional data to give you a transparent benchmark for your total loss payout.</p>
+        
+        <div class="trust-badges">
+          <div class="badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            Transparent Logic
+          </div>
+          <div class="badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            Data Driven
+          </div>
+        </div>
+      </div>
+
+      <div class="calculator-wrapper">
+        <div class="card">
+          <form id="estimator">
+            
+            <div class="form-group">
+              <label for="year">Vehicle Year</label>
+              <select id="year">
+                <option value="" disabled selected>Select Year</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="make">Vehicle Make</label>
+              <select id="make">
+                <option value="" disabled selected>Select Make</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="model">Vehicle Model</label>
+              <select id="model">
+                <option value="" disabled selected>Select Model</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="mileage">
+                Mileage (km)
+                <span class="label-help" title="Mileage over 200,000 km reduces value by ~30%; mileage under 80,000 km increases value by ~10%">ⓘ</span>
+              </label>
+              <input type="number" id="mileage" placeholder="e.g. 120000">
+            </div>
+
+            <div class="form-group">
+              <label for="province">
+                Province / Territory
+                <span class="label-help" title="Different provinces have unique multipliers impacting replacement cost.">ⓘ</span>
+              </label>
+              <select id="province">
+                <option selected>Ontario</option>
+                <option>Alberta</option>
+                <option>British Columbia</option>
+                <option>Manitoba</option>
+                <option>New Brunswick</option>
+                <option>Newfoundland and Labrador</option>
+                <option>Northwest Territories</option>
+                <option>Nova Scotia</option>
+                <option>Nunavut</option>
+                <option>Prince Edward Island</option>
+                <option>Quebec</option>
+                <option>Saskatchewan</option>
+                <option>Yukon</option>
+              </select>
+            </div>
+
+            <button type="button" id="estimate-btn">Calculate Estimate</button>
+          </form>
+
+          <!-- Results -->
+          <div class="result" id="output"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Educational Content -->
+    <section class="info-section">
+      <h2>How the estimate works</h2>
+      <div class="how-it-works-grid">
+        <div class="feature-box">
+          <h4>Base Value & Depreciation</h4>
+          <p>We start with a baseline market value and apply standard yearly depreciation models based on your vehicle's age.</p>
+        </div>
+        <div class="feature-box">
+          <h4>Mileage Adjustments</h4>
+          <p>Vehicles driven far below average retain superior value (+10%), while extreme high mileage (200,000+ km) compounds depreciation.</p>
+        </div>
+        <div class="feature-box">
+          <h4>Regional Multipliers</h4>
+          <p>Replacement costs vary massively by province. Example: BC averages 5% higher due to market costs, while remote territories require shipping premiums.</p>
+        </div>
+        <div class="feature-box">
+          <h4>The Starting Point</h4>
+          <p>This is a benchmark range. Insurers use granular market data (condition, trims). Use this estimate to confidently verify insurance offers.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="info-section">
+      <h2>Frequently Asked Questions</h2>
+      
+      <div class="faq-item">
+        <button class="faq-question">
+          How accurate is this estimate? 
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>This tool provides a solid foundational benchmark based on standardized depreciation, mileage, and geographic market health. Actual payouts will fluctuate based on real comparable autos your adjuster finds.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Why is my insurer’s payout different?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Insurers run detailed property evaluations. They consider pre-loss condition (scratches, interior wear), sub-models/trims, aftermarket additions, and specific dealership replacement data in your zip code.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Can I negotiate a total loss payout?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Absolutely. The insurer's first offer is an attempt at fair market value, but it is negotiable. Pull comparable listings for identical cars in your area and submit recent maintenance receipts to justify a higher settlement.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Will this tool use real market data in the future?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Yes. We are currently in our validation phase utilizing standardized analytics. Future iterations plan to integrate live market valuation sources for absolute precision.</p>
+        </div>
+      </div>
+      
+    </section>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 MyPolicium. Empowering drivers through transparency.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
