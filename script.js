@@ -13,13 +13,15 @@ document.addEventListener('DOMContentLoaded', () => {
   yearSelect.addEventListener("change", loadMakes);
   document.getElementById("make").addEventListener("change", loadModels);
   document.getElementById("estimate-btn").addEventListener("click", estimate);
+  const decodeBtn = document.getElementById("decode-btn");
+  if (decodeBtn) decodeBtn.addEventListener("click", decodeVIN);
 
   // 3) Setup FAQ accordions
   setupFAQ();
 });
 
 function loadMakes() {
-  fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json`)
+  return fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json`)
     .then(res => res.json())
     .then(data => {
       const makeSelect = document.getElementById("make");
@@ -46,10 +48,10 @@ function loadMakes() {
 function loadModels() {
   const year = document.getElementById("year").value;
   const make = document.getElementById("make").value;
-  if (!year || !make) return;
+  if (!year || !make) return Promise.resolve();
 
   const makeEncoded = encodeURIComponent(make);
-  fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${makeEncoded}/modelyear/${year}?format=json`)
+  return fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${makeEncoded}/modelyear/${year}?format=json`)
     .then(res => res.json())
     .then(data => {
       const modelSelect = document.getElementById("model");
@@ -78,6 +80,67 @@ function loadModels() {
       }
     })
     .catch(err => console.error("Model fetch error:", err));
+}
+
+function decodeVIN() {
+  const vin = document.getElementById("vin").value.trim().toUpperCase();
+  if (!vin || vin.length !== 17) {
+    alert("Please enter a valid 17-character VIN.");
+    return;
+  }
+
+  fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVin/${vin}?format=json`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.Results && data.Results.length > 0) {
+        let year = null;
+        let make = null;
+        let model = null;
+
+        data.Results.forEach(result => {
+          if (result.Variable === "Model Year") {
+            year = result.Value;
+          } else if (result.Variable === "Make") {
+            make = result.Value;
+          } else if (result.Variable === "Model") {
+            model = result.Value;
+          }
+        });
+
+        // Populate the fields properly with Promises
+        if (year) {
+          document.getElementById("year").value = year;
+          loadMakes().then(() => {
+            if (make) {
+              const makeSelect = document.getElementById("make");
+              const options = Array.from(makeSelect.options);
+              const matchingOption = options.find(opt => opt.value.trim().toUpperCase() === make.trim().toUpperCase());
+              if (matchingOption) {
+                makeSelect.value = matchingOption.value;
+                loadModels().then(() => {
+                  if (model) {
+                    const modelSelect = document.getElementById("model");
+                    const modOptions = Array.from(modelSelect.options);
+                    const modMatch = modOptions.find(opt => opt.value.trim().toUpperCase() === model.trim().toUpperCase() || opt.value.trim().toUpperCase().includes(model.trim().toUpperCase()));
+                    if (modMatch) modelSelect.value = modMatch.value;
+                  }
+                });
+              }
+            }
+          });
+        }
+
+        if (!year && !make && !model) {
+          alert("Unable to decode vehicle information from this VIN. Please enter details manually.");
+        }
+      } else {
+        alert("Invalid VIN or unable to decode. Please check the VIN and try again.");
+      }
+    })
+    .catch(err => {
+      console.error("VIN decode error:", err);
+      alert("Error decoding VIN. Please try again later.");
+    });
 }
 
 function estimate() {
@@ -176,4 +239,3 @@ function setupFAQ() {
     });
   });
 }
-
