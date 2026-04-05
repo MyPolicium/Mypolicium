@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator | MyPolicium</title>
+
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="index.css">
+  <style>
+    .calc-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding-top: 40px;
+    }
+    .calc-title {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <header>
+    <div class="brand-wrapper">
+      <a href="index.html">
+        <img src="logo.jpg" alt="MyPolicium Logo" class="brand-logo"
+          onerror="this.src=''; this.alt='MyPolicium'; this.style.fontSize='1.5rem'; this.style.fontFamily='Outfit'; this.style.fontWeight='700'; this.style.color='var(--primary-navy)';">
+      </a>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="calculator.html">Calculator</a>
+      <a href="learn.html">Learn</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="calc-container">
+      <h1 class="calc-title">Vehicle Value Estimator</h1>
+      <div class="calculator-wrapper" style="max-width: 100%;">
+        <div class="card">
+          <form id="estimator">
+
+            <div class="form-group">
+              <label for="vin">
+                VIN (Optional)
+                <span class="label-help"
+                  title="Enter your 17-character Vehicle Identification Number to auto-populate year, make, and model">ⓘ</span>
+              </label>
+              <div style="display: flex; gap: 10px;">
+                <input type="text" id="vin" placeholder="e.g. 1HGCM82633A123456" maxlength="17" style="flex: 1;">
+                <button type="button" id="decode-btn"
+                  style="width: auto; margin-top: 0; padding: 10px 15px; background: var(--primary-blue); color: white; border: none; border-radius: 5px; cursor: pointer;">Decode</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="year">Vehicle Year</label>
+              <select id="year">
+                <option value="" disabled selected>Select Year</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="make">Vehicle Make</label>
+              <select id="make">
+                <option value="" disabled selected>Select Make</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="model">Vehicle Model</label>
+              <select id="model">
+                <option value="" disabled selected>Select Model</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="mileage">
+                Mileage (km)
+                <span class="label-help"
+                  title="Mileage over 200,000 km reduces value by ~30%; mileage under 80,000 km increases value by ~10%">ⓘ</span>
+              </label>
+              <input type="number" id="mileage" placeholder="e.g. 120000">
+            </div>
+
+            <div class="form-group">
+              <label for="province">
+                Province / Territory
+                <span class="label-help"
+                  title="Different provinces have unique multipliers impacting replacement cost.">ⓘ</span>
+              </label>
+              <select id="province">
+                <option selected>Ontario</option>
+                <option>Alberta</option>
+                <option>British Columbia</option>
+                <option>Manitoba</option>
+                <option>New Brunswick</option>
+                <option>Newfoundland and Labrador</option>
+                <option>Northwest Territories</option>
+                <option>Nova Scotia</option>
+                <option>Nunavut</option>
+                <option>Prince Edward Island</option>
+                <option>Quebec</option>
+                <option>Saskatchewan</option>
+                <option>Yukon</option>
+              </select>
+            </div>
+
+            <button type="button" id="estimate-btn">Calculate Estimate</button>
+          </form>
+
+          <!-- Results -->
+          <div class="result" id="output"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 MyPolicium. Empowering drivers through transparency.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

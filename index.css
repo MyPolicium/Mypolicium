@@ -1,24 +1,31 @@
 /* Custom Properties for Premium SaaS Theme (Stripe/Linear Inspired) */
 :root {
-  --primary-navy: #0f172a; /* Slate 900 for high-contrast, premium text */
-  --primary-blue: #6366f1; /* Indigo 500 for brand action */
-  --secondary-blue: #4f46e5; /* Indigo 600 */
-  
-  --background-color: #f8fafc; /* Slate 50 for ultra clean background */
+  --primary-navy: #0f172a;
+  /* Slate 900 for high-contrast, premium text */
+  --primary-blue: #6366f1;
+  /* Indigo 500 for brand action */
+  --secondary-blue: #4f46e5;
+  /* Indigo 600 */
+
+  --background-color: #f8fafc;
+  /* Slate 50 for ultra clean background */
   --surface-color: #ffffff;
-  
+
   --text-dark: #0f172a;
-  --text-muted: #475569; /* Slate 600 for reading comfort */
-  --text-light: #94a3b8; /* Slate 400 for structural text */
-  
-  --border-color: #e2e8f0; /* Crisp, light borders */
+  --text-muted: #475569;
+  /* Slate 600 for reading comfort */
+  --text-light: #94a3b8;
+  /* Slate 400 for structural text */
+
+  --border-color: #e2e8f0;
+  /* Crisp, light borders */
   --border-focus: #c7d2fe;
-  
+
   /* High-end Stripe-style diffused shadows */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
   --shadow-card: 0 25px 50px -12px rgba(15, 23, 42, 0.08), 0 0 1px rgba(15, 23, 42, 0.15);
-  
+
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
@@ -43,7 +50,12 @@ body {
   flex-direction: column;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   /* Tighter letter spacing on headings looks more premium and modern */
   font-family: 'Outfit', 'Inter', sans-serif;
   color: var(--primary-navy);
@@ -53,26 +65,56 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Header */
 header {
-  padding: 24px 5%;
+  padding: 32px 5%;
   background: transparent;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   position: absolute;
   top: 0;
+  left: 0;
   width: 100%;
   z-index: 100;
 }
 
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+}
+
 .brand-logo {
-  height: 28px; /* Slightly smaller, more refined logo size */
+  height: 100px;
   object-fit: contain;
+  mix-blend-mode: multiply; /* Removes white background */
+  filter: contrast(1.05); /* Slight contrast boost */
+}
+
+/* Navigation */
+.nav-links {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.nav-links a {
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  color: var(--primary-navy);
+  font-size: 1rem;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: var(--primary-blue);
 }
 
 /* Layout Container */
 .container {
   max-width: 1140px;
   margin: 0 auto;
-  padding: 100px 24px 60px; /* Offset for absolute header */
+  padding: 100px 24px 60px;
+  /* Offset for absolute header */
   width: 100%;
 }
 
@@ -87,7 +129,8 @@ header {
 @media (min-width: 900px) {
   .hero {
     flex-direction: row;
-    align-items: center; /* Center align items for balance */
+    align-items: center;
+    /* Center align items for balance */
     gap: 80px;
   }
 }
@@ -111,6 +154,27 @@ header {
   color: var(--text-muted);
   margin-bottom: 40px;
   line-height: 1.7;
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 16px 32px;
+  background-color: var(--primary-blue);
+  color: white;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  font-size: 1.125rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(99, 102, 241, 0.25);
+  margin-bottom: 20px;
+}
+
+.cta-button:hover {
+  background-color: var(--secondary-blue);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(99, 102, 241, 0.3);
 }
 
 /* Trust Badges */
@@ -201,7 +265,8 @@ label {
   border-color: var(--primary-blue);
 }
 
-input, select {
+input,
+select {
   width: 100%;
   padding: 12px 16px;
   border: 1px solid var(--border-color);
@@ -217,7 +282,8 @@ input, select {
   box-shadow: var(--shadow-sm);
 }
 
-input:hover, select:hover {
+input:hover,
+select:hover {
   border-color: #cbd5e1;
 }
 
@@ -230,7 +296,8 @@ select {
   cursor: pointer;
 }
 
-input:focus, select:focus {
+input:focus,
+select:focus {
   outline: none;
   border-color: var(--primary-blue);
   box-shadow: 0 0 0 3px var(--border-focus);
@@ -292,8 +359,15 @@ button:active {
 }
 
 @keyframes slideInFade {
-  from { opacity: 0; transform: translateY(10px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .result-title {
@@ -325,12 +399,12 @@ button:active {
 }
 
 .result-meta span {
-    color: var(--text-light);
+  color: var(--text-light);
 }
 
 .result-meta strong {
-    color: var(--primary-navy);
-    font-weight: 500;
+  color: var(--primary-navy);
+  font-weight: 500;
 }
 
 .result-meta:last-of-type {
@@ -423,7 +497,7 @@ button:active {
 }
 
 .faq-item:first-child {
-    border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-color);
 }
 
 .faq-question {
@@ -478,7 +552,7 @@ button:active {
 }
 
 .faq-answer p {
-    line-height: 1.7;
+  line-height: 1.7;
 }
 
 /* Footer */

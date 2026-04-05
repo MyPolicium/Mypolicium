@@ -1,18 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
   // 1) Fill Year dropdown
   const yearSelect = document.getElementById("year");
-  const currentYear = new Date().getFullYear();
-  for (let y = currentYear; y >= 1990; y--) {
-    const option = document.createElement("option");
-    option.value = y;
-    option.textContent = y;
-    yearSelect.appendChild(option);
+  if (yearSelect) {
+    const currentYear = new Date().getFullYear();
+    for (let y = currentYear; y >= 1990; y--) {
+      const option = document.createElement("option");
+      option.value = y;
+      option.textContent = y;
+      yearSelect.appendChild(option);
+    }
+    // 2) Event Listeners
+    yearSelect.addEventListener("change", loadMakes);
   }
 
-  // 2) Event Listeners
-  yearSelect.addEventListener("change", loadMakes);
-  document.getElementById("make").addEventListener("change", loadModels);
-  document.getElementById("estimate-btn").addEventListener("click", estimate);
+  const makeSelect = document.getElementById("make");
+  if (makeSelect) makeSelect.addEventListener("change", loadModels);
+
+  const estimateBtn = document.getElementById("estimate-btn");
+  if (estimateBtn) estimateBtn.addEventListener("click", estimate);
+  
   const decodeBtn = document.getElementById("decode-btn");
   if (decodeBtn) decodeBtn.addEventListener("click", decodeVIN);
 
@@ -226,7 +232,7 @@ function setupFAQ() {
     faq.addEventListener('click', () => {
       const parent = faq.parentElement;
       const isActive = parent.classList.contains('active');
-      
+
       // Close all others
       document.querySelectorAll('.faq-item').forEach(item => {
         item.classList.remove('active');

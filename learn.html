@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learn | MyPolicium</title>
+
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="index.css">
+  <style>
+    .learn-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .learn-header h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+    .learn-header p {
+      font-size: 1.125rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <header>
+    <div class="brand-wrapper">
+      <a href="index.html">
+        <img src="logo.jpg" alt="MyPolicium Logo" class="brand-logo"
+          onerror="this.src=''; this.alt='MyPolicium'; this.style.fontSize='1.5rem'; this.style.fontFamily='Outfit'; this.style.fontWeight='700'; this.style.color='var(--primary-navy)';">
+      </a>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="calculator.html">Calculator</a>
+      <a href="learn.html">Learn</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="learn-header">
+      <h1>Understanding Total Loss Value</h1>
+      <p>Knowledge is power when dealing with insurance companies. Learn how to verify your payout.</p>
+    </div>
+
+    <!-- Educational Content -->
+    <section class="info-section">
+      <h2>Frequently Asked Questions</h2>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          How accurate is this estimate?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>This tool provides a solid foundational benchmark based on standardized depreciation, mileage, and
+            geographic market health. Actual payouts will fluctuate based on real comparable autos your adjuster finds.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Why is my insurer’s payout different?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Insurers run detailed property evaluations. They consider pre-loss condition (scratches, interior wear),
+            sub-models/trims, aftermarket additions, and specific dealership replacement data in your zip code.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Can I negotiate a total loss payout?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Absolutely. The insurer's first offer is an attempt at fair market value, but it is negotiable. Pull
+            comparable listings for identical cars in your area and submit recent maintenance receipts to justify a
+            higher settlement.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Will this tool use real market data in the future?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Yes. We are currently in our validation phase utilizing standardized analytics. Future iterations plan to
+            integrate live market valuation sources for absolute precision.</p>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 MyPolicium. Empowering drivers through transparency.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
