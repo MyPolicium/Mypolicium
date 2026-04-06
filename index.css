@@ -435,6 +435,32 @@ input::placeholder {
     background-position: right 10px center;
     padding-right: 36px;
   }
+
+  /* VIN decode button container */
+  .vin-decode-container {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .vin-decode-container input {
+    flex: 1;
+  }
+
+  .vin-decode-container button {
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .vin-decode-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .vin-decode-container button {
+    width: 100%;
+  }
 }
 
 button {
@@ -464,6 +490,28 @@ button:active {
   box-shadow: none;
 }
 
+/* VIN decode button */
+#decode-btn {
+  width: auto;
+  margin-top: 0;
+  padding: 10px 15px;
+  background: var(--primary-blue);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+}
+
+#decode-btn:hover {
+  background: var(--secondary-blue);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(99, 102, 241, 0.25);
+}
+
 /* Mobile Buttons */
 @media (max-width: 480px) {
   button {
@@ -474,6 +522,10 @@ button:active {
   .cta-button {
     padding: 14px 24px;
     font-size: 1rem;
+  }
+
+  #decode-btn {
+    width: 100%;
   }
 }
 

@@ -166,14 +166,75 @@ function estimate() {
   const currentYear = new Date().getFullYear();
   const age = currentYear - year;
 
-  // Basic depreciation logic
-  let msrp = 30000;
-  let value = msrp * 0.8;
-  for (let i = 2; i <= age; i++) value -= value * 0.12;
+  // 1. Dynamic base value and category mapped by Make
+  const makeData = {
+    "HONDA": { msrp: 28000, category: "economy" },
+    "TOYOTA": { msrp: 29000, category: "economy" },
+    "NISSAN": { msrp: 27000, category: "economy" },
+    "HYUNDAI": { msrp: 26000, category: "economy" },
+    "KIA": { msrp: 26000, category: "economy" },
+    "VOLKSWAGEN": { msrp: 28000, category: "economy" },
+    "MAZDA": { msrp: 28000, category: "economy" },
+    "SUBARU": { msrp: 30000, category: "economy" },
+    
+    "FORD": { msrp: 38000, category: "moderate" },
+    "CHEVROLET": { msrp: 36000, category: "moderate" },
+    "RAM": { msrp: 40000, category: "moderate" },
+    "JEEP": { msrp: 35000, category: "moderate" },
+    "GMC": { msrp: 42000, category: "moderate" },
+    "CHRYSLER": { msrp: 35000, category: "moderate" },
+    "DODGE": { msrp: 34000, category: "moderate" },
+    
+    "BMW": { msrp: 50000, category: "luxury" },
+    "MERCEDES-BENZ": { msrp: 55000, category: "luxury" },
+    "AUDI": { msrp: 52000, category: "luxury" },
+    "LEXUS": { msrp: 48000, category: "luxury" },
+    "PORSCHE": { msrp: 75000, category: "luxury" },
+    "TESLA": { msrp: 45000, category: "luxury" },
+    "LAND ROVER": { msrp: 60000, category: "luxury" },
+    "VOLVO": { msrp: 45000, category: "luxury" },
+    "ACURA": { msrp: 40000, category: "luxury" },
+    "INFINITI": { msrp: 42000, category: "luxury" },
+    "CADILLAC": { msrp: 55000, category: "luxury" },
+  };
 
-  if (mileage > 200000) value *= 0.7;
-  else if (mileage > 0 && mileage < 80000) value *= 1.1;
+  const makeUpper = make.toUpperCase();
+  // Fall back to a reasonable default value if make is not specifically tracked
+  const vehicleInfo = makeData[makeUpper] || { msrp: 30000, category: "moderate" };
+  const baseMsrp = vehicleInfo.msrp;
+  const category = vehicleInfo.category;
 
+  // 2. Improve depreciation logic based on vehicle category heuristics
+  let depreciationRate;
+  if (category === "economy") depreciationRate = 0.10; // Economics hold value better
+  else if (category === "luxury") depreciationRate = 0.15; // Luxury and tech drop faster
+  else depreciationRate = 0.12; // Moderate / Trucks 
+
+  // Apply initial 20% drop for the first year, then compound annual depreciation
+  let value = baseMsrp * 0.8;
+  for (let i = 2; i <= age; i++) {
+    value -= (value * depreciationRate);
+  }
+
+  // 3. Improve mileage adjustments using a gradual sliding scale
+  const expectedMileage = age === 0 ? 10000 : age * 20000;
+  const diffKm = mileage - expectedMileage;
+  const chunks = diffKm / 10000; // calculate chunks of 10,000 km difference
+  
+  let mileageMultiplier = 1.0;
+  if (chunks > 0) {
+    // Penalty: -1.5% per 10k over expected average
+    mileageMultiplier -= (chunks * 0.015);
+    if (mileageMultiplier < 0.6) mileageMultiplier = 0.6; // Cap penalty at -40%
+  } else if (chunks < 0) {
+    // Bonus: +1% per 10k under expected average
+    mileageMultiplier += (Math.abs(chunks) * 0.01);
+    if (mileageMultiplier > 1.2) mileageMultiplier = 1.2; // Cap bonus at +20%
+  }
+  
+  value *= mileageMultiplier;
+
+  // Hard floor value
   if (value < 1500) value = 1500;
 
   let provinceMultiplier = 1.0;
