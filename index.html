@@ -42,6 +42,43 @@
       border-top: 1px solid var(--border-color);
       padding-top: 32px;
     }
+
+    /* Mobile Home Hero */
+    @media (max-width: 768px) {
+      .home-hero {
+        padding: 40px 0 60px;
+      }
+
+      .home-hero .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .home-hero .hero-subtitle {
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+      }
+
+      .hero-badges-center {
+        gap: 20px;
+        padding-top: 24px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .home-hero .hero-title {
+        font-size: 2rem;
+      }
+
+      .home-hero .hero-subtitle {
+        font-size: 1rem;
+      }
+
+      .hero-badges-center {
+        flex-direction: column;
+        gap: 16px;
+        align-items: center;
+      }
+    }
   </style>
 </head>
 

@@ -109,6 +109,35 @@ header {
   color: var(--primary-blue);
 }
 
+/* Mobile Navigation */
+@media (max-width: 768px) {
+  header {
+    padding: 20px 5%;
+  }
+
+  .brand-logo {
+    height: 60px;
+  }
+
+  .nav-links {
+    gap: 20px;
+  }
+
+  .nav-links a {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-links {
+    gap: 15px;
+  }
+
+  .nav-links a {
+    font-size: 0.85rem;
+  }
+}
+
 /* Layout Container */
 .container {
   max-width: 1140px;
@@ -116,6 +145,19 @@ header {
   padding: 100px 24px 60px;
   /* Offset for absolute header */
   width: 100%;
+}
+
+/* Mobile Container */
+@media (max-width: 768px) {
+  .container {
+    padding: 80px 20px 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 70px 16px 30px;
+  }
 }
 
 /* Hero Section */
@@ -154,6 +196,33 @@ header {
   color: var(--text-muted);
   margin-bottom: 40px;
   line-height: 1.7;
+}
+
+/* Mobile Hero */
+@media (max-width: 768px) {
+  .hero {
+    gap: 40px;
+    margin-bottom: 60px;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+  }
 }
 
 .cta-button {
@@ -201,6 +270,32 @@ header {
   color: var(--primary-blue);
 }
 
+/* Mobile Badges */
+@media (max-width: 768px) {
+  .trust-badges {
+    gap: 20px;
+    padding-top: 24px;
+  }
+
+  .badge {
+    font-size: 0.8rem;
+    gap: 8px;
+  }
+
+  .badge svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .trust-badges {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+}
+
 /* Calculator Card - The high-end centerpiece */
 .calculator-wrapper {
   flex: 1;
@@ -228,6 +323,26 @@ header {
   background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(79, 70, 229, 0.05));
   border-radius: var(--radius-lg);
   z-index: -1;
+}
+
+/* Mobile Card */
+@media (max-width: 768px) {
+  .card {
+    padding: 30px 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 24px 16px;
+  }
+
+  .card::before {
+    top: -8px;
+    left: 8px;
+    right: -8px;
+    bottom: 8px;
+  }
 }
 
 .form-group {
@@ -308,6 +423,20 @@ input::placeholder {
   font-weight: 400;
 }
 
+/* Mobile Form Elements */
+@media (max-width: 480px) {
+  input,
+  select {
+    padding: 10px 14px;
+    font-size: 0.95rem;
+  }
+
+  select {
+    background-position: right 10px center;
+    padding-right: 36px;
+  }
+}
+
 button {
   width: 100%;
   padding: 14px;
@@ -333,6 +462,19 @@ button:hover {
 button:active {
   transform: translateY(0);
   box-shadow: none;
+}
+
+/* Mobile Buttons */
+@media (max-width: 480px) {
+  button {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  .cta-button {
+    padding: 14px 24px;
+    font-size: 1rem;
+  }
 }
 
 /* Results Section - Styled like a physical, polished receipt */
@@ -462,6 +604,33 @@ button:active {
   }
 }
 
+/* Mobile Info Section */
+@media (max-width: 768px) {
+  .info-section {
+    margin-bottom: 60px;
+  }
+
+  .info-section h2 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
+
+  .how-it-works-grid {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .info-section h2 {
+    font-size: 1.75rem;
+    margin-bottom: 24px;
+  }
+
+  .how-it-works-grid {
+    gap: 16px;
+  }
+}
+
 .feature-box {
   background: transparent;
   padding: 32px 24px;
@@ -487,6 +656,35 @@ button:active {
   color: var(--text-muted);
   font-size: 0.95rem;
   line-height: 1.7;
+}
+
+/* Mobile Feature Box */
+@media (max-width: 768px) {
+  .feature-box {
+    padding: 24px 20px;
+  }
+
+  .feature-box h4 {
+    font-size: 1rem;
+  }
+
+  .feature-box p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .feature-box {
+    padding: 20px 16px;
+  }
+
+  .feature-box h4 {
+    font-size: 0.95rem;
+  }
+
+  .feature-box p {
+    font-size: 0.85rem;
+  }
 }
 
 /* Accordion FAQ */
@@ -564,4 +762,81 @@ footer {
   margin-top: auto;
   border-top: 1px solid var(--border-color);
   background: white;
+}
+
+/* Mobile Responsive Overrides */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    padding: 20px 5%;
+    gap: 16px;
+    text-align: center;
+  }
+  
+  .container {
+    padding-top: 180px; /* Make room for taller stacked header */
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  
+  .nav-links {
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .home-hero .hero-title {
+    font-size: 2.5rem !important;
+  }
+  
+  .home-hero .hero-subtitle {
+    font-size: 1rem !important;
+    padding: 0 10px;
+  }
+  
+  .calc-title {
+    font-size: 2rem !important;
+    margin-bottom: 24px !important;
+  }
+  
+  .learn-header h1 {
+    font-size: 2rem !important;
+  }
+  
+  .card {
+    padding: 24px;
+  }
+  
+  .hero-badges-center {
+    flex-direction: column;
+    gap: 16px !important;
+    align-items: center;
+  }
+
+  .trust-badges {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .info-section h2 {
+    font-size: 1.75rem;
+  }
+  
+  .result-range {
+    font-size: 1.75rem;
+  }
+  
+  .faq-question {
+    font-size: 1rem;
+    padding: 20px 0;
+  }
+}
+
+/* Mobile Footer */
+@media (max-width: 480px) {
+  footer {
+    padding: 30px 16px;
+    font-size: 0.8rem;
+  }
 }
