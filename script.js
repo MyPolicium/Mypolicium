@@ -24,7 +24,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 3) Setup FAQ accordions
   setupFAQ();
+
+  // 4) Auto load stored data
+  if (document.getElementById("estimator")) {
+    autoLoadSavedData();
+  }
 });
+
+function autoLoadSavedData() {
+  const savedData = localStorage.getItem("MyPoliciumAppData");
+  if (!savedData) return;
+  try {
+    const data = JSON.parse(savedData);
+    if (data.mileage) document.getElementById("mileage").value = data.mileage;
+    if (data.province) document.getElementById("province").value = data.province;
+    
+    if (data.year) {
+      const yearSelect = document.getElementById("year");
+      if (yearSelect) {
+        yearSelect.value = data.year;
+        loadMakes().then(() => {
+          if (data.make) {
+            const makeSelect = document.getElementById("make");
+            makeSelect.value = data.make;
+            loadModels().then(() => {
+              if (data.model) {
+                const modelSelect = document.getElementById("model");
+                modelSelect.value = data.model;
+              }
+            });
+          }
+        });
+      }
+    }
+  } catch (e) {
+    console.warn("Could not parse saved calculator data.");
+  }
+}
 
 function loadMakes() {
   return fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json`)
@@ -266,6 +302,24 @@ function estimate() {
     maximumFractionDigits: 0
   });
 
+  const resultRange = `${formatter.format(low)} – ${formatter.format(high)}`;
+
+  // Save to LocalStorage
+  const appData = { year, make, model, mileage, province, estimatedRange: resultRange };
+  localStorage.setItem("MyPoliciumAppData", JSON.stringify(appData));
+
+  // Analytics Metric Sync (Fire and Forget)
+  try {
+    fetch('/api/save-calculation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...appData,
+        timestamp: new Date().toISOString()
+      })
+    }).catch(() => { /* silent fail if endpoint is dead */ });
+  } catch(e) {}
+
   // Re-trigger animation
   output.style.animation = 'none';
   output.offsetHeight; /* trigger reflow */
@@ -274,7 +328,7 @@ function estimate() {
   output.style.display = "block";
   output.innerHTML = `
     <div class='result-title'>Estimated Actual Cash Value</div>
-    <div class='result-range'>${formatter.format(low)} – ${formatter.format(high)}</div>
+    <div class='result-range'>${resultRange}</div>
     <div class='result-meta'><span>Vehicle:</span> <strong>${year} ${make} ${model}</strong></div>
     <div class='result-meta'><span>Mileage:</span> <strong>${Number(mileage).toLocaleString("en-CA")} km</strong></div>
     <div class='result-note'>
