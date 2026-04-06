@@ -1,4 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Mobile Menu Toggle
+  const menuBtn = document.querySelector('.mobile-menu-btn');
+  const navLinks = document.querySelector('.nav-links');
+  if (menuBtn && navLinks) {
+    menuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+  }
+
   // 1) Fill Year dropdown
   const yearSelect = document.getElementById("year");
   if (yearSelect) {

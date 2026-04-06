@@ -65,7 +65,7 @@ h6 {
 
 /* Header */
 header {
-  padding: 32px 5%;
+  padding: 24px 5%;
   background: transparent;
   display: flex;
   align-items: center;
@@ -110,21 +110,62 @@ header {
 }
 
 /* Mobile Navigation */
+.mobile-menu-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--primary-navy);
+  cursor: pointer;
+  padding: 8px;
+  box-shadow: none;
+  margin-left: auto;
+}
+
+.mobile-menu-btn:hover {
+  color: var(--primary-blue);
+}
+
 @media (max-width: 768px) {
   header {
-    padding: 20px 5%;
+    padding: 16px 5%;
   }
 
   .brand-logo {
-    height: 60px;
+    height: 50px;
+  }
+
+  .mobile-menu-btn {
+    display: block;
   }
 
   .nav-links {
+    display: none;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    background: var(--surface-color);
+    flex-direction: column;
+    padding: 24px;
+    box-shadow: var(--shadow-md);
+    border-top: 1px solid var(--border-color);
+    z-index: 99;
     gap: 20px;
   }
 
+  .nav-links.active {
+    display: flex;
+  }
+
   .nav-links a {
-    font-size: 0.9rem;
+    font-size: 1.1rem;
+    width: 100%;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .nav-links a:last-child {
+    border-bottom: none;
   }
 }
 
@@ -244,6 +285,25 @@ header {
   background-color: var(--secondary-blue);
   transform: translateY(-2px);
   box-shadow: 0 6px 10px rgba(99, 102, 241, 0.3);
+}
+
+/* Trust Line */
+.trust-line {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--primary-blue);
+  margin-top: -16px;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 768px) {
+  .trust-line {
+    font-size: 0.85rem;
+    margin-top: -12px;
+    margin-bottom: 20px;
+  }
 }
 
 /* Trust Badges */
