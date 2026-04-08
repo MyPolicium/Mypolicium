@@ -19,54 +19,6 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="index.css">
-  <style>
-    .article-container {
-      max-width: 760px;
-      margin: 0 auto;
-    }
-    
-    .article-header {
-      margin-bottom: 40px;
-    }
-
-    .article-header h1 {
-      font-size: 3rem;
-      margin-bottom: 24px;
-      line-height: 1.2;
-    }
-
-    .article-content h2 {
-      font-size: 2rem;
-      margin-top: 48px;
-      margin-bottom: 24px;
-      color: var(--primary-navy);
-      letter-spacing: -0.02em;
-    }
-    
-    .article-content h3 {
-      font-size: 1.5rem;
-      margin-top: 40px;
-      margin-bottom: 20px;
-      color: var(--primary-navy);
-    }
-
-    .article-content p {
-      font-size: 1.125rem;
-      color: var(--text-muted);
-      line-height: 1.8;
-      margin-bottom: 24px;
-    }
-
-    .article-content strong {
-      color: var(--text-dark);
-      font-weight: 600;
-    }
-    
-    @media (max-width: 768px) {
-      .article-header h1 { font-size: 2.25rem; }
-      .article-content h2 { font-size: 1.75rem; }
-    }
-  </style>
 </head>
 
 <body>
@@ -79,8 +31,8 @@
           onerror="this.src=''; this.alt='MyPolicium'; this.style.fontSize='1.5rem'; this.style.fontFamily='Outfit'; this.style.fontWeight='700'; this.style.color='var(--primary-navy)';">
       </a>
     </div>
-    <button class="mobile-menu-btn" aria-label="Toggle navigation">
-      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    <button class="mobile-menu-btn" aria-label="Toggle navigation" onclick="toggleMobileMenu()">
+      <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
     </button>
     <nav class="nav-links">
       <a href="index.html">Home</a>
@@ -138,12 +90,14 @@
         
         <p>Use the MyPolicium calculator to estimate your vehicle’s value and get a realistic starting point before reviewing your settlement.</p>
         
-        <a href="calculator.html" class="cta-button" style="margin-top: 10px;">Go to Estimator</a>
+        <div class="article-cta">
+          <a href="calculator.html" class="cta-button">Go to Estimator</a>
+        </div>
 
-        <hr style="margin: 60px 0; border: none; border-top: 1px solid var(--border-color);">
+        <hr>
 
-        <section class="info-section" style="margin-bottom: 0;">
-          <h2 style="font-size: 2.25rem;">Frequently Asked Questions</h2>
+        <section class="info-section">
+          <h2>Frequently Asked Questions</h2>
           
           <div class="faq-item">
             <button class="faq-question">

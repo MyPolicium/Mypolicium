@@ -1,12 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Mobile Menu Toggle
-  const menuBtn = document.querySelector('.mobile-menu-btn');
-  const navLinks = document.querySelector('.nav-links');
-  if (menuBtn && navLinks) {
-    menuBtn.addEventListener('click', () => {
-      navLinks.classList.toggle('active');
-    });
-  }
+  // Mobile Menu Toggle handled via global toggleMobileMenu function
 
   // 1) Fill Year dropdown
   const yearSelect = document.getElementById("year");
@@ -173,7 +166,9 @@ function decodeVIN() {
                     const modelSelect = document.getElementById("model");
                     const modOptions = Array.from(modelSelect.options);
                     const modMatch = modOptions.find(opt => opt.value.trim().toUpperCase() === model.trim().toUpperCase() || opt.value.trim().toUpperCase().includes(model.trim().toUpperCase()));
-                    if (modMatch) modelSelect.value = modMatch.value;
+                    if (modMatch) {
+                      modelSelect.value = modMatch.value;
+                    }
                   }
                 });
               }
@@ -368,4 +363,15 @@ function setupFAQ() {
       }
     });
   });
+}
+
+/** 
+ * Global function for mobile menu toggle 
+ * Linked via onclick in HTML to bypass potential JS load order issues 
+ */
+function toggleMobileMenu() {
+  const navLinks = document.querySelector('.nav-links');
+  if (navLinks) {
+    navLinks.classList.toggle('active');
+  }
 }

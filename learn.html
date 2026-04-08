@@ -24,10 +24,12 @@
       text-align: center;
       margin-bottom: 60px;
     }
+
     .learn-header h1 {
       font-size: 3rem;
       margin-bottom: 20px;
     }
+
     .learn-header p {
       font-size: 1.125rem;
       color: var(--text-muted);
@@ -73,8 +75,13 @@
           onerror="this.src=''; this.alt='MyPolicium'; this.style.fontSize='1.5rem'; this.style.fontFamily='Outfit'; this.style.fontWeight='700'; this.style.color='var(--primary-navy)';">
       </a>
     </div>
-    <button class="mobile-menu-btn" aria-label="Toggle navigation">
-      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    <button class="mobile-menu-btn" aria-label="Toggle navigation" onclick="toggleMobileMenu()">
+      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
     </button>
     <nav class="nav-links">
       <a href="index.html">Home</a>
@@ -91,12 +98,26 @@
     </div>
 
     <section class="info-section">
-      <h2 style="margin-bottom: 24px;">Featured Guide</h2>
+      <h2 style="margin-bottom: 24px;">Featured Guides</h2>
+      
+      <a href="negotiate-total-loss.html" style="text-decoration: none;">
+        <div class="feature-box"
+          style="margin-bottom: 40px; text-align: left; cursor: pointer; border-left: 4px solid #10b981; background: #f0fdf4;">
+          <h4 style="font-size: 1.5rem; margin-bottom: 16px;">Can You Negotiate a Total Loss Settlement?</h4>
+          <p style="color: var(--text-muted);">One of the first things you’ll look at is the settlement amount and think, "this feels low." Learn how to approach the negotiation process with real market evidence.</p>
+          <span style="color: #10b981; font-weight: 600; display: inline-block; margin-top: 16px;">Read the Full Article →</span>
+        </div>
+      </a>
+
       <a href="article-total-loss.html" style="text-decoration: none;">
-        <div class="feature-box" style="margin-bottom: 60px; text-align: left; cursor: pointer; border-left: 4px solid var(--primary-blue);">
+        <div class="feature-box"
+          style="margin-bottom: 60px; text-align: left; cursor: pointer; border-left: 4px solid var(--primary-blue);">
           <h4 style="font-size: 1.5rem; margin-bottom: 16px;">How Much Will Insurance Pay for Your Car After a Total Loss?</h4>
-          <p style="color: var(--text-muted);">If your car has been written off after an accident, the first thing on your mind is probably: "How much am I actually getting back?" Explore our full breakdown of Actual Cash Value and how the payout process works.</p>
-          <span style="color: var(--primary-blue); font-weight: 600; display: inline-block; margin-top: 16px;">Read the Full Article →</span>
+          <p style="color: var(--text-muted);">If your car has been written off after an accident, the first thing on
+            your mind is probably: "How much am I actually getting back?" Explore our full breakdown of Actual Cash
+            Value and how the payout process works.</p>
+          <span style="color: var(--primary-blue); font-weight: 600; display: inline-block; margin-top: 16px;">Read the
+            Full Article →</span>
         </div>
       </a>
     </section>
