@@ -28,38 +28,7 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="index.css">
-  <style>
-    .calc-container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding-top: 40px;
-    }
-
-    .calc-title {
-      text-align: center;
-      margin-bottom: 40px;
-      font-size: 2.5rem;
-    }
-
-    /* Mobile Calculator */
-    @media (max-width: 768px) {
-      .calc-container {
-        padding-top: 20px;
-      }
-
-      .calc-title {
-        font-size: 2rem;
-        margin-bottom: 30px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .calc-title {
-        font-size: 1.75rem;
-        margin-bottom: 24px;
-      }
-    }
-  </style>
+</head>
 </head>
 
 <body>
@@ -98,7 +67,7 @@
               </label>
               <div class="vin-decode-container">
                 <input type="text" id="vin" placeholder="e.g. 1HGCM82633A123456" maxlength="17">
-                <button type="button" id="decode-btn">Decode</button>
+                <button type="button" id="decode-btn" class="btn btn-primary btn-sm">Decode</button>
               </div>
             </div>
 
@@ -155,7 +124,7 @@
               </select>
             </div>
 
-            <button type="button" id="estimate-btn">Calculate Estimate</button>
+            <button type="button" id="estimate-btn" class="btn btn-secondary btn-full">Calculate Estimate</button>
             <p style="font-size: 0.75rem; color: var(--text-light); text-align: center; margin-top: 16px; margin-bottom: 0;">This tool may store anonymous usage data (such as vehicle details and estimates) to improve accuracy and performance. No personal information is collected.</p>
           </form>
 
