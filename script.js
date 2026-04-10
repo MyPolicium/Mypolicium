@@ -87,11 +87,19 @@ function loadMakes() {
         if (nameA > nameB) return 1;
         return 0;
       });
+      const seenMakes = new Set();
       sortedMakes.forEach(m => {
-        const option = document.createElement("option");
-        option.value = m.MakeName;
-        option.textContent = m.MakeName;
-        makeSelect.appendChild(option);
+        const rawName = m.MakeName || "";
+        const cleanName = rawName.trim();
+        const upperName = cleanName.toUpperCase();
+
+        if (cleanName && !seenMakes.has(upperName)) {
+          seenMakes.add(upperName);
+          const option = document.createElement("option");
+          option.value = cleanName;
+          option.textContent = cleanName;
+          makeSelect.appendChild(option);
+        }
       });
     })
     .catch(err => console.error("Make fetch error:", err));
@@ -116,11 +124,19 @@ function loadModels() {
         if (nameA > nameB) return 1;
         return 0;
       });
+      const seenModels = new Set();
       sortedModels.forEach(m => {
-        const option = document.createElement("option");
-        option.value = m.Model_Name;
-        option.textContent = m.Model_Name;
-        modelSelect.appendChild(option);
+        const rawName = m.Model_Name || "";
+        const cleanName = rawName.trim();
+        const upperName = cleanName.toUpperCase();
+
+        if (cleanName && !seenModels.has(upperName)) {
+          seenModels.add(upperName);
+          const option = document.createElement("option");
+          option.value = cleanName;
+          option.textContent = cleanName;
+          modelSelect.appendChild(option);
+        }
       });
 
       if (!data.Results.length) {
