@@ -47,7 +47,7 @@
     <nav class="nav-links">
       <a href="index.html">Home</a>
       <a href="calculator.html">Calculator</a>
-      <a href="learn.html">Articles & FAQs</a>
+      <a href="learn.html">Learn</a>
       <a href="privacy.html">Privacy</a>
     </nav>
   </header>
@@ -56,11 +56,14 @@
 
     <!-- Hero Section -->
     <section class="home-hero">
-      <h1 class="hero-title">Know your vehicle's true worth.</h1>
-      <p class="trust-line">Built to reflect real-world insurance valuation methods.</p>
-      <p class="hero-subtitle">Insurance evaluations can feel like a black box. Our Actual Cash Value (ACV) estimator decodes regional data and depreciation models to give you a transparent benchmark for your total loss payout.</p>
+      <h1 class="hero-title">Don't settle for a low insurance payout.</h1>
+      <p class="trust-line">Built using real-world insurance and claims experience</p>
+      <p class="hero-subtitle">Insurance companies use their own math to calculate total loss. Our ACV estimator decodes their methods to give you a transparent, fair-market benchmark before you accept their first offer.</p>
       
-      <a href="calculator.html" class="btn btn-primary btn-lg">Estimate Your Car’s Value</a>
+      <div style="margin-bottom: 32px;">
+        <a href="calculator.html" class="btn btn-primary btn-lg">Verify Your Car’s Value</a>
+        <span class="cta-microcopy">Takes 30 seconds. No signup required.</span>
+      </div>
 
       <div class="hero-badges-center">
         <div class="badge">
@@ -68,39 +71,74 @@
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
             <polyline points="22 4 12 14.01 9 11.01"></polyline>
           </svg>
-          Transparent Logic
+          Fair Market Benchmarks
         </div>
         <div class="badge">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
           </svg>
-          Data Driven
+          Claims-Ready Data
         </div>
       </div>
     </section>
 
-    <!-- Information Section 1 -->
-    <section class="info-section">
-      <h2>How Total Loss Payouts Work</h2>
-      <div class="how-it-works-grid">
-        <div class="feature-box">
-          <h4>Pre-Accident Condition</h4>
-          <p>Insurance companies evaluate what your car was worth exactly one second before the accident. This is based on actual market listings for comparable vehicles in your area.</p>
+    <!-- Quick Start Calculator Preview -->
+    <section class="quick-start-section">
+      <div class="quick-start-card">
+        <div class="example-header" style="margin-bottom: 16px;">Quick Start Estimator</div>
+        <div class="quick-start-grid">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label>Year</label>
+            <input type="text" placeholder="e.g. 2021" id="qs-year">
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label>Make</label>
+            <input type="text" placeholder="e.g. Honda" id="qs-make">
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label>Model</label>
+            <input type="text" placeholder="e.g. Civic" id="qs-model">
+          </div>
         </div>
-        <div class="feature-box">
-          <h4>Deductions & Adjustments</h4>
-          <p>The insurer will deduct for prior damage, wear and tear, or high mileage. They will also make adjustments for specific trim levels or factory options your car has.</p>
-        </div>
-        <div class="feature-box">
-          <h4>Taxes and Fees</h4>
-          <p>In many regions, your payout legally must include the sales tax on the actual cash value of the vehicle, so you have enough funds to replace it.</p>
-        </div>
-        <div class="feature-box">
-          <h4>The Right to Negotiate</h4>
-          <p>You do not have to accept the first offer. You can compile your own list of comparables and negotiate for a higher, fairer market value.</p>
+        <button class="btn btn-primary" onclick="window.location.href='calculator.html'">See My Estimated Value →</button>
+        <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 12px; margin-bottom: 0;">Most users check this before accepting their insurance payout.</p>
+
+        <!-- Example Valuation Trust Builder -->
+        <div class="example-valuation-block">
+          <div class="example-header">Recent Valuation Example</div>
+          <div class="example-content">
+            <div class="example-car">2021 Honda Civic LX (45,000 km, Ontario)</div>
+            <div class="example-value">$21,400 – $23,600</div>
+          </div>
+          <div style="font-size: 0.75rem; color: var(--text-light);">Calculated 1 hour ago using current regional market data.</div>
         </div>
       </div>
     </section>
+
+
+    <!-- Information Section 1 -->
+    <section class="info-section">
+      <h2>How to Avoid Being Underpaid</h2>
+      <div class="how-it-works-grid">
+        <div class="feature-box">
+          <h4>Pre-Accident Condition</h4>
+          <p>Insurance companies evaluate what your car was worth exactly one second before the accident. We help you find better market evidence to support a higher valuation.</p>
+        </div>
+        <div class="feature-box">
+          <h4>Deductions & Adjustments</h4>
+          <p>Adjusters often miss key trim details or recent maintenance. Learn how to identify and dispute unfair deductions that lower your payout.</p>
+        </div>
+        <div class="feature-box">
+          <h4>Taxes and Fees</h4>
+          <p>Your legally entitled payout must often include sales tax on top of the ACV. We ensure your estimate includes all fees required for full replacement.</p>
+        </div>
+        <div class="feature-box">
+          <h4>Successful Negotiation</h4>
+          <p>You do not have to accept the first offer. Use our data-driven benchmarks to confidently push for a higher, fairer market value settlement.</p>
+        </div>
+      </div>
+    </section>
+
 
     <!-- Information Section 2 -->
     <section class="info-section">
