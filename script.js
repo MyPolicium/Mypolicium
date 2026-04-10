@@ -1,6 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Mobile Menu Toggle handled via global toggleMobileMenu function
 
+  // Update articles globally
+  if (document.getElementById("featured-guides-container")) {
+    renderArticles("featured-guides-container");
+  }
+  if (document.getElementById("latest-articles-container")) {
+    renderArticles("latest-articles-container", 2); // Show only latest 2 on homepage
+  }
+
   // 1) Fill Year dropdown
   const yearSelect = document.getElementById("year");
   if (yearSelect) {
@@ -375,3 +383,65 @@ function toggleMobileMenu() {
     navLinks.classList.toggle('active');
   }
 }
+
+/**
+ * Article Data & Rendering
+ */
+const ARTICLES = [
+  {
+    title: "What Happens After Your Car Is Declared a Total Loss?",
+    excerpt: "If your car has been written off, you are probably wondering what actually happens next. Learn about the valuation process, salvage branding, and what happens to your vehicle after the claim.",
+    url: "what-happens-after-total-loss.html",
+    publishDate: "2026-04-10",
+    createdDate: "2026-04-10"
+  },
+  {
+    title: "Can You Negotiate a Total Loss Settlement?",
+    excerpt: "One of the first things you’ll look at is the settlement amount and think, \"this feels low.\" Learn how to approach the negotiation process with real market evidence.",
+    url: "negotiate-total-loss.html",
+    publishDate: "2026-04-08",
+    createdDate: "2026-04-08"
+  },
+  {
+    title: "How Much Will Insurance Pay for Your Car After a Total Loss?",
+    excerpt: "If your car has been written off after an accident, the first thing on your mind is probably: \"How much am I actually getting back?\" Explore our full breakdown of Actual Cash Value and how the payout process works.",
+    url: "article-total-loss.html",
+    publishDate: "2026-04-05",
+    createdDate: "2026-04-05"
+  }
+];
+
+function renderArticles(containerId, limit = null) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  // Sort: Newest first (Descending)
+  const sortedArticles = [...ARTICLES].sort((a, b) => {
+    const dateA = new Date(a.publishDate || a.createdDate);
+    const dateB = new Date(b.publishDate || b.createdDate);
+    return dateB - dateA;
+  });
+
+  const displayArticles = limit ? sortedArticles.slice(0, limit) : sortedArticles;
+
+  let html = "";
+  displayArticles.forEach((article, index) => {
+    html += `
+      <a href="${article.url}" style="text-decoration: none;">
+        <div class="feature-box">
+          <h4>${article.title}</h4>
+          <p>${article.excerpt}</p>
+          <span class="read-more">Read the Full Article →</span>
+        </div>
+      </a>
+    `;
+    
+    // Add spacer if not the last one
+    if (index < displayArticles.length - 1) {
+      html += `<div style="margin-bottom: 32px;"></div>`;
+    }
+  });
+
+  container.innerHTML = html;
+}
+
