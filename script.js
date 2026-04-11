@@ -229,78 +229,161 @@ function estimate() {
 
   const currentYear = new Date().getFullYear();
   const age = currentYear - year;
+  const makeUpper = make.toUpperCase();
+  const modelUpper = model.toUpperCase();
 
-  // 1. Dynamic base value and category mapped by Make
+  // 1. Exotic Check
+  const exotics = ["FERRARI", "LAMBORGHINI", "MCLAREN", "BENTLEY", "ROLLS-ROYCE", "ASTON MARTIN", "BUGATTI", "KOENIGSEGG", "PAGANI"];
+  if (exotics.includes(makeUpper)) {
+    output.style.display = "block";
+    output.innerHTML = `
+      <div class='result-title' style='color: #b91c1c;'>Manual Valuation Required</div>
+      <div class='result-meta'><span>Vehicle:</span> <strong>${year} ${make} ${model}</strong></div>
+      <div class='result-note' style='margin-top: 16px; color: var(--text-dark); background: #fee2e2; padding: 12px; border-radius: 6px; border: 1px solid #f87171;'>
+        Rare, exotic, or collector vehicles are not accurately tracked by standard depreciation models. Please seek a professional appraisal.
+      </div>
+    `;
+    return;
+  }
+
+  // 2. Structured Lookup
   const makeData = {
-    "HONDA": { msrp: 28000, category: "economy" },
-    "TOYOTA": { msrp: 29000, category: "economy" },
-    "NISSAN": { msrp: 27000, category: "economy" },
-    "HYUNDAI": { msrp: 26000, category: "economy" },
-    "KIA": { msrp: 26000, category: "economy" },
-    "VOLKSWAGEN": { msrp: 28000, category: "economy" },
-    "MAZDA": { msrp: 28000, category: "economy" },
-    "SUBARU": { msrp: 30000, category: "economy" },
-    
-    "FORD": { msrp: 38000, category: "moderate" },
-    "CHEVROLET": { msrp: 36000, category: "moderate" },
-    "RAM": { msrp: 40000, category: "moderate" },
-    "JEEP": { msrp: 35000, category: "moderate" },
-    "GMC": { msrp: 42000, category: "moderate" },
-    "CHRYSLER": { msrp: 35000, category: "moderate" },
-    "DODGE": { msrp: 34000, category: "moderate" },
-    
-    "BMW": { msrp: 50000, category: "luxury" },
-    "MERCEDES-BENZ": { msrp: 55000, category: "luxury" },
-    "AUDI": { msrp: 52000, category: "luxury" },
-    "LEXUS": { msrp: 48000, category: "luxury" },
-    "PORSCHE": { msrp: 75000, category: "luxury" },
-    "TESLA": { msrp: 45000, category: "luxury" },
-    "LAND ROVER": { msrp: 60000, category: "luxury" },
-    "VOLVO": { msrp: 45000, category: "luxury" },
-    "ACURA": { msrp: 40000, category: "luxury" },
-    "INFINITI": { msrp: 42000, category: "luxury" },
-    "CADILLAC": { msrp: 55000, category: "luxury" },
+    "HONDA": {
+      models: { "CIVIC": { msrp: 26000, category: "economy" }, "ACCORD": { msrp: 30000, category: "midsize" }, "CR-V": { msrp: 34000, category: "suv" }, "PILOT": { msrp: 42000, category: "suv" } },
+      default: { msrp: 28000, category: "midsize" }
+    },
+    "TOYOTA": {
+      models: { "COROLLA": { msrp: 25000, category: "economy" }, "CAMRY": { msrp: 30000, category: "midsize" }, "RAV4": { msrp: 35000, category: "suv" }, "HIGHLANDER": { msrp: 45000, category: "suv" }, "TACOMA": { msrp: 40000, category: "truck" }, "TUNDRA": { msrp: 55000, category: "truck" } },
+      default: { msrp: 29000, category: "midsize" }
+    },
+    "FORD": {
+      models: { "F-150": { msrp: 50000, category: "truck" }, "ESCAPE": { msrp: 33000, category: "suv" }, "EXPLORER": { msrp: 45000, category: "suv" }, "MUSTANG": { msrp: 40000, category: "performance" } },
+      default: { msrp: 38000, category: "suv" }
+    },
+    "CHEVROLET": {
+      models: { "SILVERADO": { msrp: 48000, category: "truck" }, "EQUINOX": { msrp: 32000, category: "suv" }, "TAHOE": { msrp: 60000, category: "suv" }, "CORVETTE": { msrp: 75000, category: "performance" } },
+      default: { msrp: 36000, category: "suv" }
+    },
+    "NISSAN": {
+      models: { "SENTRA": { msrp: 24000, category: "economy" }, "ROGUE": { msrp: 33000, category: "suv" }, "PATHFINDER": { msrp: 42000, category: "suv" } },
+      default: { msrp: 27000, category: "midsize" }
+    },
+    "HYUNDAI": {
+      models: { "ELANTRA": { msrp: 24000, category: "economy" }, "SONATA": { msrp: 28000, category: "midsize" }, "TUCSON": { msrp: 32000, category: "suv" } },
+      default: { msrp: 26000, category: "midsize" }
+    },
+    "KIA": {
+      models: { "FORTE": { msrp: 24000, category: "economy" }, "SPORTAGE": { msrp: 32000, category: "suv" }, "TELLURIDE": { msrp: 45000, category: "suv" } },
+      default: { msrp: 26000, category: "midsize" }
+    },
+    "ROVER": { default: { msrp: 60000, category: "luxury" } },
+    "LAND ROVER": { default: { msrp: 60000, category: "luxury" } },
+    "BMW": { default: { msrp: 50000, category: "luxury" } },
+    "MERCEDES-BENZ": { default: { msrp: 55000, category: "luxury" } },
+    "AUDI": { default: { msrp: 52000, category: "luxury" } },
+    "LEXUS": { default: { msrp: 48000, category: "luxury" } },
+    "PORSCHE": { default: { msrp: 75000, category: "performance" } },
+    "MASERATI": { default: { msrp: 80000, category: "luxury" } },
+    "TESLA": { default: { msrp: 45000, category: "luxury" } },
+    "RAM": { default: { msrp: 50000, category: "truck" } },
+    "JEEP": {
+      models: { "WRANGLER": { msrp: 45000, category: "suv" }, "GRAND CHEROKEE": { msrp: 48000, category: "suv" } },
+      default: { msrp: 38000, category: "suv" }
+    },
+    "GMC": { default: { msrp: 52000, category: "truck" } },
+    "CHRYSLER": { default: { msrp: 35000, category: "midsize" } },
+    "DODGE": { default: { msrp: 34000, category: "midsize" } },
+    "VOLKSWAGEN": { default: { msrp: 28000, category: "economy" } },
+    "MAZDA": { default: { msrp: 28000, category: "economy" } },
+    "SUBARU": { default: { msrp: 30000, category: "economy" } },
+    "VOLVO": { default: { msrp: 45000, category: "luxury" } },
+    "ACURA": { default: { msrp: 40000, category: "luxury" } },
+    "INFINITI": { default: { msrp: 42000, category: "luxury" } },
+    "CADILLAC": { default: { msrp: 55000, category: "luxury" } }
   };
 
-  const makeUpper = make.toUpperCase();
-  // Fall back to a reasonable default value if make is not specifically tracked
-  const vehicleInfo = makeData[makeUpper] || { msrp: 30000, category: "moderate" };
-  const baseMsrp = vehicleInfo.msrp;
-  const category = vehicleInfo.category;
+  let baseMsrp = 30000;
+  let category = "midsize";
+  let confidenceLevel = "Moderate";
+  
+  if (makeUpper === "MASERATI" || makeUpper === "PORSCHE") {
+     confidenceLevel = "Low";
+  }
 
-  // 2. Improve depreciation logic based on vehicle category heuristics
-  let depreciationRate;
-  if (category === "economy") depreciationRate = 0.10; // Economics hold value better
-  else if (category === "luxury") depreciationRate = 0.15; // Luxury and tech drop faster
-  else depreciationRate = 0.12; // Moderate / Trucks 
+  const mkData = makeData[makeUpper];
+  if (mkData) {
+    let modelMatched = false;
+    if (mkData.models) {
+      for (const [modKey, modVal] of Object.entries(mkData.models)) {
+        if (modelUpper.includes(modKey)) {
+          baseMsrp = modVal.msrp;
+          category = modVal.category;
+          modelMatched = true;
+          if (confidenceLevel !== "Low") confidenceLevel = "High";
+          break;
+        }
+      }
+    }
+    if (!modelMatched && mkData.default) {
+      baseMsrp = mkData.default.msrp;
+      category = mkData.default.category;
+    }
+  }
 
-  // Apply initial 20% drop for the first year, then compound annual depreciation
+  // 3. Specialty Vehicle Detection (Low Confidence)
+  const isSpecialty = modelUpper.match(/\b(TYPE R|GT3|HELLCAT|Z06|TRACKHAWK|BLACK SERIES|SVJ|AMG|RS)\b/) || modelUpper.match(/\bM\d\b/);
+  if (isSpecialty) {
+    confidenceLevel = "Low";
+    category = "performance";
+  }
+
+  // 4. Trim logic
+  let trimMultiplier = 1.0;
+  if (!isSpecialty) {
+    if (modelUpper.match(/\b(BASE|LX|LE)\b/)) trimMultiplier = 0.975;
+    else if (modelUpper.match(/\b(EX|XLE|SPORT|SE)\b/)) trimMultiplier = 1.03;
+    else if (modelUpper.match(/\b(TOURING|LIMITED|PLATINUM)\b/)) trimMultiplier = 1.06;
+  }
+  baseMsrp *= trimMultiplier;
+
+  // 5. Category-based Depreciation
+  let depreciationRate = 0.12; 
+  if (category === "economy") depreciationRate = 0.11;
+  else if (category === "suv") depreciationRate = 0.10;
+  else if (category === "truck") depreciationRate = 0.08;
+  else if (category === "performance") depreciationRate = 0.14;
+  else if (category === "luxury") depreciationRate = 0.15;
+
   let value = baseMsrp * 0.8;
   for (let i = 2; i <= age; i++) {
     value -= (value * depreciationRate);
   }
 
-  // 3. Improve mileage adjustments using a gradual sliding scale
+  // 6. Mileage adjustments
   const expectedMileage = age === 0 ? 10000 : age * 20000;
   const diffKm = mileage - expectedMileage;
-  const chunks = diffKm / 10000; // calculate chunks of 10,000 km difference
+  const chunks = diffKm / 10000;
   
   let mileageMultiplier = 1.0;
   if (chunks > 0) {
-    // Penalty: -1.5% per 10k over expected average
     mileageMultiplier -= (chunks * 0.015);
-    if (mileageMultiplier < 0.6) mileageMultiplier = 0.6; // Cap penalty at -40%
+    if (mileageMultiplier < 0.6) mileageMultiplier = 0.6;
   } else if (chunks < 0) {
-    // Bonus: +1% per 10k under expected average
     mileageMultiplier += (Math.abs(chunks) * 0.01);
-    if (mileageMultiplier > 1.2) mileageMultiplier = 1.2; // Cap bonus at +20%
+    if (mileageMultiplier > 1.2) mileageMultiplier = 1.2;
   }
-  
   value *= mileageMultiplier;
 
-  // Hard floor value
-  if (value < 1500) value = 1500;
+  // 7. Sanity Checks & Bounds
+  let minFloor = Math.max(baseMsrp * 0.12, 2000);
+  if (category === "suv" || category === "truck") {
+    minFloor = Math.max(baseMsrp * 0.15, 3000);
+  }
+  if (value < minFloor) value = minFloor;
+  
+  if (value > baseMsrp * 1.15) value = baseMsrp * 1.15;
 
+  // Province Multiplier
   let provinceMultiplier = 1.0;
   let provinceNote = "";
   switch (province) {
@@ -318,7 +401,6 @@ function estimate() {
     case "Northwest Territories": provinceMultiplier = 1.10; provinceNote = "NWT +10%"; break;
     case "Nunavut": provinceMultiplier = 1.15; provinceNote = "Nunavut +15%"; break;
   }
-
   value *= provinceMultiplier;
 
   const low = value * 0.9;
@@ -332,39 +414,49 @@ function estimate() {
 
   const resultRange = `${formatter.format(low)} – ${formatter.format(high)}`;
 
-  // Save to LocalStorage
   const appData = { year, make, model, mileage, province, estimatedRange: resultRange };
   localStorage.setItem("MyPoliciumAppData", JSON.stringify(appData));
 
-  // Analytics Metric Sync (Fire and Forget)
   try {
     fetch('/api/save-calculation', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...appData,
-        timestamp: new Date().toISOString()
-      })
-    }).catch(() => { /* silent fail if endpoint is dead */ });
+      body: JSON.stringify({ ...appData, timestamp: new Date().toISOString() })
+    }).catch(() => {});
   } catch(e) {}
 
-  // Re-trigger animation
   output.style.animation = 'none';
-  output.offsetHeight; /* trigger reflow */
+  output.offsetHeight;
   output.style.animation = null;
+
+  let confidenceColor = "#10b981"; // high
+  if (confidenceLevel === "Moderate") confidenceColor = "#f59e0b";
+  else if (confidenceLevel === "Low") confidenceColor = "#f97316";
+
+  let lowConfidenceWarning = "";
+  if (confidenceLevel === "Low") {
+    lowConfidenceWarning = `<div style="margin-top: 12px; font-size: 0.85rem; color: #9a3412; background: #fff7ed; padding: 10px; border-radius: 6px; border: 1px solid #fed7aa;">
+      <strong>Note:</strong> Performance, luxury, or specialty vehicles often deviate from standard depreciation curves. Treat this estimate with caution.
+    </div>`;
+  }
 
   output.style.display = "block";
   output.innerHTML = `
     <div class='result-title'>Estimated Actual Cash Value</div>
     <div class='result-range'>${resultRange}</div>
+    <div style='margin-bottom: 16px; font-size: 0.85rem; display: flex; align-items: center; gap: 6px;'>
+      <div style="width: 10px; height: 10px; border-radius: 50%; background: ${confidenceColor};"></div>
+      <strong>Confidence:</strong> ${confidenceLevel}
+    </div>
     <div class='result-meta'><span>Vehicle:</span> <strong>${year} ${make} ${model}</strong></div>
     <div class='result-meta'><span>Mileage:</span> <strong>${Number(mileage).toLocaleString("en-CA")} km</strong></div>
     <div class='result-note'>
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
       Adjustment: ${provinceNote}
     </div>
+    ${lowConfidenceWarning}
     <div class='result-disclaimer'>
-      *This is an estimate only. Actual insurance payouts may vary based on vehicle condition, trim, prior damage, options, local market conditions, and insurer valuation methods.
+      *This is a benchmark estimate only. Actual insurance payouts may vary based on exact condition, trim, local market availability, and insurer math.
     </div>
   `;
 }

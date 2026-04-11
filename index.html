@@ -29,7 +29,6 @@
   <!-- Styles -->
   <link rel="stylesheet" href="index.css">
 </head>
-</head>
 
 <body>
 
@@ -37,8 +36,7 @@
   <header>
     <div class="brand-wrapper">
       <a href="index.html">
-        <img src="Logo1.jpg" alt="MyPolicium Logo" class="brand-logo"
-          onerror="this.src=''; this.alt='MyPolicium'; this.style.fontSize='1.5rem'; this.style.fontFamily='Outfit'; this.style.fontWeight='700'; this.style.color='var(--primary-navy)';">
+        <img src="Logo1.jpg" alt="MyPolicium Logo" class="brand-logo">
       </a>
     </div>
     <button class="mobile-menu-btn" aria-label="Toggle navigation" onclick="toggleMobileMenu()">
@@ -89,28 +87,38 @@
         <div class="quick-start-grid">
           <div class="form-group" style="margin-bottom: 0;">
             <label>Year</label>
-            <input type="text" placeholder="e.g. 2021" id="qs-year">
+            <input type="text" value="2021" id="qs-year" disabled>
           </div>
           <div class="form-group" style="margin-bottom: 0;">
             <label>Make</label>
-            <input type="text" placeholder="e.g. Honda" id="qs-make">
+            <input type="text" value="Honda" id="qs-make" disabled>
           </div>
           <div class="form-group" style="margin-bottom: 0;">
             <label>Model</label>
-            <input type="text" placeholder="e.g. Civic" id="qs-model">
+            <input type="text" value="Civic" id="qs-model" disabled>
           </div>
         </div>
         <button class="btn btn-primary" onclick="window.location.href='calculator.html'">See My Estimated Value →</button>
-        <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 12px; margin-bottom: 0;">Most users check this before accepting their insurance payout.</p>
+        <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 12px; margin-bottom: 0;">
+          *Interactive estimates available on the full calculator page.
+        </p>
 
         <!-- Example Valuation Trust Builder -->
         <div class="example-valuation-block">
-          <div class="example-header">Recent Valuation Example</div>
+          <div class="example-header">Recent Estimates</div>
           <div class="example-content">
             <div class="example-car">2021 Honda Civic LX (45,000 km, Ontario)</div>
             <div class="example-value">$21,400 – $23,600</div>
           </div>
-          <div style="font-size: 0.75rem; color: var(--text-light);">Calculated 1 hour ago using current regional market data.</div>
+          <div class="example-content" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-color);">
+            <div class="example-car">2018 Toyota RAV4 LE (92,000 km, Alberta)</div>
+            <div class="example-value">$19,200 – $21,100</div>
+          </div>
+          <div class="example-content" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-color);">
+            <div class="example-car">2023 Ford F-150 XLT (21,000 km, BC)</div>
+            <div class="example-value">$48,500 – $53,200</div>
+          </div>
+          <div style="font-size: 0.75rem; color: var(--text-light); margin-top: 16px;">Calculated using current regional market data.</div>
         </div>
       </div>
     </section>
