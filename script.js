@@ -456,7 +456,7 @@ function estimate() {
     </div>
     ${lowConfidenceWarning}
     <div class='result-disclaimer'>
-      *This is a benchmark estimate only. Actual insurance payouts may vary based on exact condition, trim, local market availability, and insurer math.
+      *This estimate is a benchmark only and may not reflect your insurer’s final valuation. Actual cash value may vary based on condition, trim, and comparable vehicles.
     </div>
   `;
 }
