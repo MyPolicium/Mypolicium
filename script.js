@@ -73,33 +73,43 @@ function autoLoadSavedData() {
 }
 
 function loadMakes() {
-  return fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json`)
-    .then(res => res.json())
-    .then(data => {
+  const types = ['car', 'mpv', 'truck'];
+  const promises = types.map(type => 
+    fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/${type}?format=json`)
+      .then(res => res.json())
+      .catch(() => ({ Results: [] }))
+  );
+
+  return Promise.all(promises)
+    .then(responses => {
       const makeSelect = document.getElementById("make");
       makeSelect.innerHTML = '<option value="" disabled selected>Select Make</option>';
-      document.getElementById("model").innerHTML = '<option value="" disabled selected>Select Model</option>';
+      const modelSelect = document.getElementById("model");
+      if (modelSelect) modelSelect.innerHTML = '<option value="" disabled selected>Select Model</option>';
 
-      const sortedMakes = data.Results.sort((a, b) => {
-        const nameA = (a.MakeName || "").trim().toUpperCase();
-        const nameB = (b.MakeName || "").trim().toUpperCase();
-        if (nameA < nameB) return -1;
-        if (nameA > nameB) return 1;
-        return 0;
-      });
-      const seenMakes = new Set();
-      sortedMakes.forEach(m => {
-        const rawName = m.MakeName || "";
-        const cleanName = rawName.trim();
-        const upperName = cleanName.toUpperCase();
+      // Combine all results into one flat array
+      const allMakes = responses.flatMap(r => r.Results || []);
 
-        if (cleanName && !seenMakes.has(upperName)) {
-          seenMakes.add(upperName);
-          const option = document.createElement("option");
-          option.value = cleanName;
-          option.textContent = cleanName;
-          makeSelect.appendChild(option);
+      // Deduplicate using normalized uppercase keys
+      const uniqueMakesMap = new Map(); // UpperCase -> CleanOriginal
+      allMakes.forEach(m => {
+        const rawName = (m.MakeName || "").trim();
+        const upperName = rawName.toUpperCase();
+        if (rawName && !uniqueMakesMap.has(upperName)) {
+          uniqueMakesMap.set(upperName, rawName);
         }
+      });
+
+      // Convert to array and sort alphabetically
+      const sortedMakes = Array.from(uniqueMakesMap.values()).sort((a, b) => 
+        a.localeCompare(b, undefined, { sensitivity: 'base' })
+      );
+
+      sortedMakes.forEach(cleanName => {
+        const option = document.createElement("option");
+        option.value = cleanName;
+        option.textContent = cleanName;
+        makeSelect.appendChild(option);
       });
     })
     .catch(err => console.error("Make fetch error:", err));
