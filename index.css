@@ -124,6 +124,7 @@ header {
 
 .mobile-menu-btn:hover {
   color: var(--primary-blue);
+  background-color: transparent;
 }
 
 @media (max-width: 768px) {
@@ -137,6 +138,8 @@ header {
 
   .mobile-menu-btn {
     display: block;
+    width: auto;
+    margin-left: auto;
   }
 
   .nav-links {
