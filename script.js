@@ -497,6 +497,13 @@ function toggleMobileMenu() {
  */
 const ARTICLES = [
   {
+    title: "What Is OPCF 43 Depreciation Waiver and Is It Worth It?",
+    excerpt: "If you have a newer vehicle, there’s a good chance you’ve heard about OPCF 43, also known as a depreciation waiver. But what exactly is it, and is it actually worth having?",
+    url: "article-opcf-43.html",
+    publishDate: "2026-04-11",
+    createdDate: "2026-04-11"
+  },
+  {
     title: "What Happens After Your Car Is Declared a Total Loss?",
     excerpt: "If your car has been written off, you are probably wondering what actually happens next. Learn about the valuation process, salvage branding, and what happens to your vehicle after the claim.",
     url: "what-happens-after-total-loss.html",
