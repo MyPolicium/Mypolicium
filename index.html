@@ -86,19 +86,50 @@
         <div class="example-header" style="margin-bottom: 16px;">Quick Start Estimator</div>
         <div class="quick-start-grid">
           <div class="form-group" style="margin-bottom: 0;">
-            <label>Year</label>
-            <input type="text" value="2021" id="qs-year" disabled>
+            <label for="qs-year">Year</label>
+            <select id="qs-year">
+              <option value="" disabled selected>Select Year</option>
+            </select>
           </div>
           <div class="form-group" style="margin-bottom: 0;">
-            <label>Make</label>
-            <input type="text" value="Honda" id="qs-make" disabled>
+            <label for="qs-make">Make</label>
+            <select id="qs-make">
+              <option value="" disabled selected>Select Make</option>
+            </select>
           </div>
           <div class="form-group" style="margin-bottom: 0;">
-            <label>Model</label>
-            <input type="text" value="Civic" id="qs-model" disabled>
+            <label for="qs-model">Model</label>
+            <select id="qs-model">
+              <option value="" disabled selected>Select Model</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="qs-mileage">Mileage (km)</label>
+            <input type="number" id="qs-mileage" placeholder="e.g. 50000">
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="qs-province">Province</label>
+            <select id="qs-province">
+              <option selected>Ontario</option>
+              <option>Alberta</option>
+              <option>British Columbia</option>
+              <option>Manitoba</option>
+              <option>New Brunswick</option>
+              <option>Newfoundland and Labrador</option>
+              <option>Northwest Territories</option>
+              <option>Nova Scotia</option>
+              <option>Nunavut</option>
+              <option>Prince Edward Island</option>
+              <option>Quebec</option>
+              <option>Saskatchewan</option>
+              <option>Yukon</option>
+            </select>
           </div>
         </div>
-        <button class="btn btn-primary" onclick="window.location.href='calculator.html'">See My Estimated Value →</button>
+        <p style="text-align: center; font-size: 0.9rem; color: var(--text-muted); margin: 20px 0;">
+          Enter your vehicle details below to continue with a full estimate.
+        </p>
+        <button type="button" id="qs-continue-btn" class="btn btn-primary btn-full">Continue to Full Estimate →</button>
         <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 12px; margin-bottom: 0;">
           *Interactive estimates available on the full calculator page.
         </p>

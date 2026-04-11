@@ -32,6 +32,42 @@ document.addEventListener('DOMContentLoaded', () => {
   const decodeBtn = document.getElementById("decode-btn");
   if (decodeBtn) decodeBtn.addEventListener("click", decodeVIN);
 
+  // 5) Homepage Quick Start initialization
+  const qsYearSelect = document.getElementById("qs-year");
+  if (qsYearSelect) {
+    const currentYear = new Date().getFullYear();
+    for (let y = currentYear; y >= 1990; y--) {
+      const option = document.createElement("option");
+      option.value = y;
+      option.textContent = y;
+      qsYearSelect.appendChild(option);
+    }
+    qsYearSelect.addEventListener("change", () => loadMakes("qs-year", "qs-make", "qs-model"));
+    
+    const qsMakeSelect = document.getElementById("qs-make");
+    if (qsMakeSelect) qsMakeSelect.addEventListener("change", () => loadModels("qs-year", "qs-make", "qs-model"));
+
+    const qsContinueBtn = document.getElementById("qs-continue-btn");
+    if (qsContinueBtn) {
+      qsContinueBtn.addEventListener("click", () => {
+        const year = document.getElementById("qs-year").value;
+        const make = document.getElementById("qs-make").value;
+        const model = document.getElementById("qs-model").value;
+        const mileage = document.getElementById("qs-mileage").value;
+        const province = document.getElementById("qs-province").value;
+
+        if (!year || !make || !model) {
+          alert("Please select Year, Make, and Model to continue.");
+          return;
+        }
+
+        const appData = { year, make, model, mileage, province };
+        localStorage.setItem("MyPoliciumAppData", JSON.stringify(appData));
+        window.location.href = 'calculator.html';
+      });
+    }
+  }
+
   // 3) Setup FAQ accordions
   setupFAQ();
 
@@ -72,7 +108,10 @@ function autoLoadSavedData() {
   }
 }
 
-function loadMakes() {
+function loadMakes(yearId = "year", makeId = "make", modelId = "model") {
+  const yearSelect = document.getElementById(yearId);
+  const year = yearSelect ? yearSelect.value : null;
+  
   const types = ['car', 'mpv', 'truck'];
   const promises = types.map(type => 
     fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/${type}?format=json`)
@@ -82,9 +121,10 @@ function loadMakes() {
 
   return Promise.all(promises)
     .then(responses => {
-      const makeSelect = document.getElementById("make");
+      const makeSelect = document.getElementById(makeId);
+      if (!makeSelect) return;
       makeSelect.innerHTML = '<option value="" disabled selected>Select Make</option>';
-      const modelSelect = document.getElementById("model");
+      const modelSelect = document.getElementById(modelId);
       if (modelSelect) modelSelect.innerHTML = '<option value="" disabled selected>Select Model</option>';
 
       // Combine all results into one flat array
@@ -115,16 +155,17 @@ function loadMakes() {
     .catch(err => console.error("Make fetch error:", err));
 }
 
-function loadModels() {
-  const year = document.getElementById("year").value;
-  const make = document.getElementById("make").value;
+function loadModels(yearId = "year", makeId = "make", modelId = "model") {
+  const year = document.getElementById(yearId).value;
+  const make = document.getElementById(makeId).value;
   if (!year || !make) return Promise.resolve();
 
   const makeEncoded = encodeURIComponent(make);
   return fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${makeEncoded}/modelyear/${year}?format=json`)
     .then(res => res.json())
     .then(data => {
-      const modelSelect = document.getElementById("model");
+      const modelSelect = document.getElementById(modelId);
+      if (!modelSelect) return;
       modelSelect.innerHTML = '<option value="" disabled selected>Select Model</option>';
 
       const sortedModels = data.Results.sort((a, b) => {
