@@ -20,11 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
       yearSelect.appendChild(option);
     }
     // 2) Event Listeners
-    yearSelect.addEventListener("change", loadMakes);
+    yearSelect.addEventListener("change", () => loadMakes("year", "make", "model"));
   }
 
   const makeSelect = document.getElementById("make");
-  if (makeSelect) makeSelect.addEventListener("change", loadModels);
+  if (makeSelect) makeSelect.addEventListener("change", () => loadModels("year", "make", "model"));
 
   const estimateBtn = document.getElementById("estimate-btn");
   if (estimateBtn) estimateBtn.addEventListener("click", estimate);
@@ -151,6 +151,11 @@ function loadMakes(yearId = "year", makeId = "make", modelId = "model") {
         option.textContent = cleanName;
         makeSelect.appendChild(option);
       });
+
+      // Reset model dropdown UI when make list is rebuilt or changed
+      if (modelSelect) {
+        modelSelect.innerHTML = '<option value="" disabled selected>Select Model</option>';
+      }
     })
     .catch(err => console.error("Make fetch error:", err));
 }
@@ -356,6 +361,7 @@ function estimate() {
   let baseMsrp = 30000;
   let category = "midsize";
   let confidenceLevel = "Moderate";
+  let modelMatched = false;
   
   if (makeUpper === "MASERATI" || makeUpper === "PORSCHE") {
      confidenceLevel = "Low";
@@ -363,14 +369,13 @@ function estimate() {
 
   const mkData = makeData[makeUpper];
   if (mkData) {
-    let modelMatched = false;
     if (mkData.models) {
       for (const [modKey, modVal] of Object.entries(mkData.models)) {
         if (modelUpper.includes(modKey)) {
           baseMsrp = modVal.msrp;
           category = modVal.category;
           modelMatched = true;
-          if (confidenceLevel !== "Low") confidenceLevel = "High";
+          // confidence handling moved below
           break;
         }
       }
@@ -463,6 +468,7 @@ function estimate() {
     maximumFractionDigits: 0
   });
 
+  const midpoint = (low + high) / 2;
   const resultRange = `${formatter.format(low)} – ${formatter.format(high)}`;
 
   const appData = { year, make, model, mileage, province, estimatedRange: resultRange };
@@ -476,40 +482,115 @@ function estimate() {
     }).catch(() => {});
   } catch(e) {}
 
-  output.style.animation = 'none';
-  output.offsetHeight;
-  output.style.animation = null;
+  try {
+    // 8. Visual Enhancements & Comparisons
+    const normalMileage = (mileage >= 40000 && mileage <= 160000);
+    let confidenceResult = "Moderate";
+    
+    if (confidenceLevel === "Low") {
+      confidenceResult = "Low";
+    } else if (modelMatched && normalMileage) {
+      confidenceResult = "Strong";
+    } else {
+      confidenceResult = "Moderate";
+    }
 
-  let confidenceColor = "#10b981"; // high
-  if (confidenceLevel === "Moderate") confidenceColor = "#f59e0b";
-  else if (confidenceLevel === "Low") confidenceColor = "#f97316";
+    const insurerLow = low * 0.9;
+    const insurerHigh = high * 0.95;
+    const insurerMidpoint = (insurerLow + insurerHigh) / 2;
+    const insurerRangeStr = `${formatter.format(insurerLow)} – ${formatter.format(insurerHigh)}`;
+    
+    const showWarning = (midpoint - insurerMidpoint) / insurerMidpoint > 0.08;
+    const underpaymentLow = (midpoint - insurerHigh);
+    const underpaymentHigh = (midpoint - insurerLow);
 
-  let lowConfidenceWarning = "";
-  if (confidenceLevel === "Low") {
-    lowConfidenceWarning = `<div style="margin-top: 12px; font-size: 0.85rem; color: #9a3412; background: #fff7ed; padding: 10px; border-radius: 6px; border: 1px solid #fed7aa;">
-      <strong>Note:</strong> Performance, luxury, or specialty vehicles often deviate from standard depreciation curves. Treat this estimate with caution.
-    </div>`;
+    output.style.animation = 'none';
+    output.offsetHeight;
+    output.style.animation = null;
+
+    let confidenceColor = "#10b981"; // Strong/High
+    if (confidenceResult === "Moderate") confidenceColor = "#f59e0b";
+    else if (confidenceResult === "Low") confidenceColor = "#f97316";
+
+    let warningBoxHeader = "";
+    if (showWarning) {
+      warningBoxHeader = `
+        <div class="warning-box">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          <div class="warning-content">
+            <span class="warning-title">Potential Valuation Gap Detected</span>
+            Your insurance offer may fall below this benchmark by approximately <strong>${formatter.format(underpaymentLow)} – ${formatter.format(underpaymentHigh)}</strong>. This estimate suggests there may be room to review the valuation with your insurer.
+          </div>
+        </div>
+      `;
+    } else {
+      warningBoxHeader = `
+        <div class="warning-box" style="background: #f0fdf4; border-color: #bbf7d0;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 12l3 3 5-5"></path></svg>
+          <div class="warning-content" style="color: #166534;">
+            Your estimate falls within a typical valuation range for this vehicle type and market.
+          </div>
+        </div>
+      `;
+    }
+
+    let specialtyWarning = "";
+    if (confidenceResult === "Low") {
+      specialtyWarning = `<div style="margin-top: 12px; font-size: 0.85rem; color: #9a3412; background: #fff7ed; padding: 10px; border-radius: 6px; border: 1px solid #fed7aa;">
+        <strong>Note:</strong> Performance, luxury, or specialty vehicles often deviate from standard curves. Treat this estimate with caution.
+      </div>`;
+    }
+
+    output.style.display = "block";
+    output.innerHTML = `
+      <div class='result-title'>Estimated Fair Market Value</div>
+      <div class='result-range'>${resultRange}</div>
+      <div class='result-subtext'>This is a data-driven benchmark based on current market patterns.</div>
+
+      <div style='margin-bottom: 24px; font-size: 0.85rem; display: flex; align-items: center; gap: 6px;'>
+        <div style="width: 10px; height: 10px; border-radius: 50%; background: ${confidenceColor};"></div>
+        <strong>Confidence Level:</strong> ${confidenceResult}
+      </div>
+
+      <div class='result-meta'><span>Vehicle:</span> <strong>${year} ${make} ${model}</strong></div>
+      <div class='result-meta'><span>Mileage:</span> <strong>${Number(mileage).toLocaleString("en-CA")} km</strong></div>
+      
+      <div class='insurer-comparison'>
+        <div class='insurer-label'>Illustrative insurer comparison range</div>
+        <div class='insurer-value'>${insurerRangeStr}</div>
+        <div class='insurer-note'>*Heuristic benchmark based on common industry patterns, not a specific insurer's valuation model.</div>
+      </div>
+
+      ${warningBoxHeader}
+      ${specialtyWarning}
+
+      <div class="result-cta-group">
+        <a href="negotiate-total-loss.html" class="btn btn-primary btn-full" style="text-align: center; text-decoration: none;">Learn how to negotiate this value →</a>
+        <a href="what-happens-after-total-loss.html" class="btn btn-outline btn-full" style="text-align: center; text-decoration: none; border: 1px solid var(--border-color); color: var(--primary-navy); padding: 12px; border-radius: var(--radius-md);">Understand how insurers calculate this</a>
+      </div>
+
+      <div class="trust-boost">
+        This estimate is independent and not influenced by any insurance company.
+      </div>
+
+      <div class='result-disclaimer'>
+        *This estimate is a benchmark only and may not reflect your insurer’s final valuation. Actual cash value may vary based on condition, trim, and comparable vehicles.
+      </div>
+    `;
+  } catch (renderError) {
+    console.error("Result rendering error:", renderError);
+    // Fallback simple result display
+    output.style.display = "block";
+    output.innerHTML = `
+      <div class='result-title'>Estimated Market Value</div>
+      <div class='result-range'>${resultRange}</div>
+      <div class='result-meta'><span>Vehicle:</span> <strong>${year} ${make} ${model}</strong></div>
+      <div class='result-meta'><span>Mileage:</span> <strong>${Number(mileage).toLocaleString("en-CA")} km</strong></div>
+      <div class='result-disclaimer'>
+        *This is a simplified estimate. Some advanced market comparison features are currently unavailable.
+      </div>
+    `;
   }
-
-  output.style.display = "block";
-  output.innerHTML = `
-    <div class='result-title'>Estimated Actual Cash Value</div>
-    <div class='result-range'>${resultRange}</div>
-    <div style='margin-bottom: 16px; font-size: 0.85rem; display: flex; align-items: center; gap: 6px;'>
-      <div style="width: 10px; height: 10px; border-radius: 50%; background: ${confidenceColor};"></div>
-      <strong>Confidence:</strong> ${confidenceLevel}
-    </div>
-    <div class='result-meta'><span>Vehicle:</span> <strong>${year} ${make} ${model}</strong></div>
-    <div class='result-meta'><span>Mileage:</span> <strong>${Number(mileage).toLocaleString("en-CA")} km</strong></div>
-    <div class='result-note'>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-      Adjustment: ${provinceNote}
-    </div>
-    ${lowConfidenceWarning}
-    <div class='result-disclaimer'>
-      *This estimate is a benchmark only and may not reflect your insurer’s final valuation. Actual cash value may vary based on condition, trim, and comparable vehicles.
-    </div>
-  `;
 }
 
 function setupFAQ() {

@@ -835,12 +835,24 @@ button:active {
   display: none;
   margin-top: 32px;
   padding: 32px 24px;
-  background: var(--background-color);
+  background: var(--surface-color);
   border-radius: var(--radius-md);
   border: 1px solid var(--border-color);
+  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.1);
   animation: slideInFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   position: relative;
   overflow: hidden;
+}
+
+.result::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(99, 102, 241, 0.02) 0%, transparent 100%);
+  pointer-events: none;
 }
 
 .result::before {
@@ -875,13 +887,93 @@ button:active {
 }
 
 .result-range {
-  font-size: 2.25rem;
-  font-weight: 700;
-  font-family: 'Inter', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 800;
+  font-family: 'Outfit', sans-serif;
   color: var(--primary-navy);
-  margin-bottom: 24px;
+  margin-bottom: 8px;
   line-height: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
+}
+
+.result-subtext {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  font-weight: 400;
+}
+
+.insurer-comparison {
+  margin-top: 24px;
+  padding: 16px;
+  background: var(--background-color);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+}
+
+.insurer-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 4px;
+  letter-spacing: 0.05em;
+}
+
+.insurer-value {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-family: 'Inter', sans-serif;
+}
+
+.insurer-note {
+  font-size: 0.7rem;
+  color: var(--text-light);
+  margin-top: 8px;
+  font-style: italic;
+}
+
+.warning-box {
+  margin-top: 24px;
+  padding: 20px;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: var(--radius-md);
+  display: flex;
+  gap: 12px;
+}
+
+.warning-box svg {
+  color: #d97706;
+  flex-shrink: 0;
+}
+
+.warning-content {
+  font-size: 0.95rem;
+  color: #92400e;
+  line-height: 1.5;
+}
+
+.warning-title {
+  font-weight: 700;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.result-cta-group {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.trust-boost {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-weight: 500;
 }
 
 .result-meta {
