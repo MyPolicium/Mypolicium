@@ -85,9 +85,10 @@ header {
 }
 
 .brand-logo {
-  max-height: 48px;
+  height: 48px;
   width: auto;
   object-fit: contain;
+  display: block;
 }
 
 /* Navigation */
@@ -133,7 +134,7 @@ header {
   }
 
   .brand-logo {
-    max-height: 36px;
+    height: 36px;
   }
 
   .mobile-menu-btn {
