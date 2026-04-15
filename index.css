@@ -1179,10 +1179,16 @@ button:active {
   font-weight: 500;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 24px;
   cursor: pointer;
   box-shadow: none;
   border-radius: 0;
+}
+
+.faq-question span:first-child {
+  flex: 1;
+  line-height: 1.5;
 }
 
 .faq-question:hover {

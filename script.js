@@ -648,6 +648,13 @@ function toggleMobileMenu() {
  */
 const ARTICLES = [
   {
+    title: "What Is Actual Cash Value (ACV) and How Is It Calculated?",
+    excerpt: "If your car is written off, the amount you receive is based on Actual Cash Value. Learn how ACV is calculated and why it matters for your claim.",
+    url: "what-is-actual-cash-value.html",
+    publishDate: "2026-04-14",
+    createdDate: "2026-04-14"
+  },
+  {
     title: "What Is OPCF 43 Depreciation Waiver and Is It Worth It?",
     excerpt: "If you have a newer vehicle, there’s a good chance you’ve heard about OPCF 43, also known as a depreciation waiver. But what exactly is it, and is it actually worth having?",
     url: "article-opcf-43.html",
@@ -683,9 +690,9 @@ function renderArticles(containerId, limit = null) {
 
   // Sort: Newest first (Descending)
   const sortedArticles = [...ARTICLES].sort((a, b) => {
-    const dateA = new Date(a.publishDate || a.createdDate);
-    const dateB = new Date(b.publishDate || b.createdDate);
-    return dateB - dateA;
+    const valA = a.publishDate || a.createdDate || "";
+    const valB = b.publishDate || b.createdDate || "";
+    return valB.localeCompare(valA);
   });
 
   const displayArticles = limit ? sortedArticles.slice(0, limit) : sortedArticles;
