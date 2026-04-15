@@ -562,19 +562,19 @@ function estimate() {
       if (insurerOffer < low) {
         verdict = "Your offer may be below market value";
         toneClass = "assessment-below";
-        explanation = "Based on our market model, this offer falls below the expected range for similar vehicles in your region.";
+        explanation = "This offer falls below the expected market range for your vehicle.";
       } else if (insurerOffer >= low && insurerOffer <= midpoint) {
         verdict = "Your offer is on the lower end of market value";
         toneClass = "assessment-caution";
-        explanation = "This offer is within the market range, but sits on the lower side of average replacement costs.";
+        explanation = "This offer is within range but below the midpoint of expected value.";
       } else if (insurerOffer > midpoint && insurerOffer <= high) {
         verdict = "Your offer appears to be within a reasonable range";
         toneClass = "assessment-fair";
-        explanation = "This offer aligns well with current market benchmarks for your vehicle's condition and mileage.";
+        explanation = "This offer aligns with expected fair market value.";
       } else if (insurerOffer > high) {
         verdict = "Your offer is above typical market value";
         toneClass = "assessment-fair";
-        explanation = "This is a strong offer that exceeds the typical market range for your vehicle.";
+        explanation = "This offer exceeds typical market expectations.";
       }
 
       assessmentHtml = `
