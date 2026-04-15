@@ -294,6 +294,7 @@ function estimate() {
   const modelRaw = document.getElementById("model").value;
   const mileageRaw = document.getElementById("mileage").value;
   const provinceRaw = document.getElementById("province").value;
+  const insurerOfferRaw = document.getElementById("insurer-offer") ? document.getElementById("insurer-offer").value : "";
   const output = document.getElementById("output");
 
   // Normalization
@@ -538,6 +539,53 @@ function estimate() {
     let confidenceColor = "#10b981"; 
     if (confidenceResult === "Moderate") confidenceColor = "#f59e0b";
 
+    // --- Assessment Logic ---
+    const insurerOffer = insurerOfferRaw ? parseFloat(insurerOfferRaw.replace(/[^0-9.]/g, "")) : null;
+    let assessmentHtml = "";
+    
+    if (insurerOffer === null || isNaN(insurerOffer)) {
+      // Default Informational State
+      assessmentHtml = `
+        <div class="assessment-box">
+          <div class="assessment-title">Assessment</div>
+          <div class="assessment-explanation">
+            This estimate represents a typical market range for your vehicle. 
+            Compare this range to your insurer’s offer to determine if it is fair.
+          </div>
+        </div>
+      `;
+    } else {
+      let verdict = "";
+      let toneClass = "";
+      let explanation = "";
+
+      if (insurerOffer < low) {
+        verdict = "Your offer may be below market value";
+        toneClass = "assessment-below";
+        explanation = "Based on our market model, this offer falls below the expected range for similar vehicles in your region.";
+      } else if (insurerOffer >= low && insurerOffer <= midpoint) {
+        verdict = "Your offer is on the lower end of market value";
+        toneClass = "assessment-caution";
+        explanation = "This offer is within the market range, but sits on the lower side of average replacement costs.";
+      } else if (insurerOffer > midpoint && insurerOffer <= high) {
+        verdict = "Your offer appears to be within a reasonable range";
+        toneClass = "assessment-fair";
+        explanation = "This offer aligns well with current market benchmarks for your vehicle's condition and mileage.";
+      } else if (insurerOffer > high) {
+        verdict = "Your offer is above typical market value";
+        toneClass = "assessment-fair";
+        explanation = "This is a strong offer that exceeds the typical market range for your vehicle.";
+      }
+
+      assessmentHtml = `
+        <div class="assessment-box ${toneClass}">
+          <div class="assessment-title">Assessment</div>
+          <div class="assessment-verdict">${verdict}</div>
+          <div class="assessment-explanation">${explanation}</div>
+        </div>
+      `;
+    }
+
     let warningBoxHeader = "";
     if (showWarning) {
       warningBoxHeader = `
@@ -565,6 +613,8 @@ function estimate() {
       <div class='result-title'>Estimated Fair Market Value Range</div>
       <div class='result-range'>${resultRange}</div>
       <div class='result-subtext'>This estimate reflects typical Canadian market conditions for similar vehicles.</div>
+
+      ${assessmentHtml}
 
       <div style='margin-bottom: 24px; font-size: 0.85rem; display: flex; align-items: center; gap: 6px;'>
         <div style="width: 10px; height: 10px; border-radius: 50%; background: ${confidenceColor};"></div>

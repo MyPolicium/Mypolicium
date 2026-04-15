@@ -962,6 +962,62 @@ button:active {
   margin-bottom: 4px;
 }
 
+/* Assessment Verdict Box */
+.assessment-box {
+  margin-top: 24px;
+  padding: 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--surface-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.assessment-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-light);
+}
+
+.assessment-verdict {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--primary-navy);
+  line-height: 1.2;
+}
+
+.assessment-explanation {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Assessment Variants */
+.assessment-below {
+  border-color: #f87171;
+  background: #fef2f2;
+}
+.assessment-below .assessment-verdict { color: #b91c1c; }
+.assessment-below .assessment-explanation { color: #991b1b; }
+
+.assessment-caution {
+  border-color: #fbbf24;
+  background: #fffbeb;
+}
+.assessment-caution .assessment-verdict { color: #b45309; }
+.assessment-caution .assessment-explanation { color: #92400e; }
+
+.assessment-fair {
+  border-color: #34d399;
+  background: #f0fdf4;
+}
+.assessment-fair .assessment-verdict { color: #065f46; }
+.assessment-fair .assessment-explanation { color: #064e3b; }
+
 .result-cta-group {
   margin-top: 32px;
   display: flex;
