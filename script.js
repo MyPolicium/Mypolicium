@@ -108,56 +108,46 @@ function autoLoadSavedData() {
   }
 }
 
+// ---------------------------------------------------------
+// Vehicle Make Whitelist (Mainstream Passenger Vehicles)
+// ---------------------------------------------------------
+const APPROVED_MAKES = [
+  "Acura", "Alfa Romeo", "Audi", "BMW", "Buick", "Cadillac", "Chevrolet", "Chrysler", 
+  "Dodge", "FIAT", "Ford", "Genesis", "GMC", "Honda", "Hyundai", "INFINITI", 
+  "Jaguar", "Jeep", "Kia", "Land Rover", "Lexus", "Lincoln", "Lucid", "Maserati", 
+  "Mazda", "Mercedes-AMG", "Mercedes-Benz", "MINI", "Mitsubishi", "Nissan", "Polestar", 
+  "Porsche", "Ram", "Rivian", "Rolls-Royce", "smart", "Subaru", "Suzuki", "Tesla", 
+  "Toyota", "Volkswagen", "Volvo"
+].sort((a, b) => a.localeCompare(b));
+
+// Map curated labels to NHTSA API canonical values if necessary
+const MAKE_API_MAPPING = {
+  "Mercedes-AMG": "MERCEDES-BENZ"
+};
+
 function loadMakes(yearId = "year", makeId = "make", modelId = "model") {
-  const yearSelect = document.getElementById(yearId);
-  const year = yearSelect ? yearSelect.value : null;
-  
-  const types = ['car', 'mpv', 'truck'];
-  const promises = types.map(type => 
-    fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/${type}?format=json`)
-      .then(res => res.json())
-      .catch(() => ({ Results: [] }))
-  );
+  const makeSelect = document.getElementById(makeId);
+  if (!makeSelect) return Promise.resolve();
 
-  return Promise.all(promises)
-    .then(responses => {
-      const makeSelect = document.getElementById(makeId);
-      if (!makeSelect) return;
-      makeSelect.innerHTML = '<option value="" disabled selected>Select Make</option>';
-      const modelSelect = document.getElementById(modelId);
-      if (modelSelect) modelSelect.innerHTML = '<option value="" disabled selected>Select Model</option>';
+  const modelSelect = document.getElementById(modelId);
+  if (modelSelect) modelSelect.innerHTML = '<option value="" disabled selected>Select Model</option>';
 
-      // Combine all results into one flat array
-      const allMakes = responses.flatMap(r => r.Results || []);
+  const currentValue = makeSelect.value;
+  makeSelect.innerHTML = '<option value="" disabled selected>Select Make</option>';
 
-      // Deduplicate using normalized uppercase keys
-      const uniqueMakesMap = new Map(); // UpperCase -> CleanOriginal
-      allMakes.forEach(m => {
-        const rawName = (m.MakeName || "").trim();
-        const upperName = rawName.toUpperCase();
-        if (rawName && !uniqueMakesMap.has(upperName)) {
-          uniqueMakesMap.set(upperName, rawName);
-        }
-      });
+  APPROVED_MAKES.forEach(make => {
+    const option = document.createElement("option");
+    option.value = make;
+    option.textContent = make;
+    makeSelect.appendChild(option);
+  });
 
-      // Convert to array and sort alphabetically
-      const sortedMakes = Array.from(uniqueMakesMap.values()).sort((a, b) => 
-        a.localeCompare(b, undefined, { sensitivity: 'base' })
-      );
+  // Restore value if it exists in the new list
+  if (currentValue && APPROVED_MAKES.includes(currentValue)) {
+    makeSelect.value = currentValue;
+  }
 
-      sortedMakes.forEach(cleanName => {
-        const option = document.createElement("option");
-        option.value = cleanName;
-        option.textContent = cleanName;
-        makeSelect.appendChild(option);
-      });
-
-      // Reset model dropdown UI when make list is rebuilt or changed
-      if (modelSelect) {
-        modelSelect.innerHTML = '<option value="" disabled selected>Select Model</option>';
-      }
-    })
-    .catch(err => console.error("Make fetch error:", err));
+  return Promise.resolve();
 }
 
 function loadModels(yearId = "year", makeId = "make", modelId = "model") {
@@ -165,7 +155,9 @@ function loadModels(yearId = "year", makeId = "make", modelId = "model") {
   const make = document.getElementById(makeId).value;
   if (!year || !make) return Promise.resolve();
 
-  const makeEncoded = encodeURIComponent(make);
+  // Use API mapping or fallback to selected make label
+  const apiMake = MAKE_API_MAPPING[make] || make;
+  const makeEncoded = encodeURIComponent(apiMake);
   return fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${makeEncoded}/modelyear/${year}?format=json`)
     .then(res => res.json())
     .then(data => {
@@ -186,6 +178,8 @@ function loadModels(yearId = "year", makeId = "make", modelId = "model") {
         const cleanName = rawName.trim();
         const upperName = cleanName.toUpperCase();
 
+        // Filter out commercial/heavy models if needed (optional but recommended)
+        // For now, we keep logic simple but ensure uniqueness
         if (cleanName && !seenModels.has(upperName)) {
           seenModels.add(upperName);
           const option = document.createElement("option");
@@ -697,6 +691,13 @@ function toggleMobileMenu() {
  * Article Data & Rendering
  */
 const ARTICLES = [
+  {
+    title: "Why Is My Car Insurance So Expensive?",
+    excerpt: "Lately, it feels like everyone is asking the same question. Rates have been going up, and a lot of people are noticing it. Learn the factors behind insurance pricing.",
+    url: "why-is-car-insurance-expensive.html",
+    publishDate: "2026-04-14",
+    createdDate: "2026-04-14"
+  },
   {
     title: "What Is Actual Cash Value (ACV) and How Is It Calculated?",
     excerpt: "If your car is written off, the amount you receive is based on Actual Cash Value. Learn how ACV is calculated and why it matters for your claim.",
