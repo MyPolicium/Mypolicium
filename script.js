@@ -24,7 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const makeSelect = document.getElementById("make");
-  if (makeSelect) makeSelect.addEventListener("change", () => loadModels("year", "make", "model"));
+  if (makeSelect) {
+    makeSelect.addEventListener("change", () => loadModels("year", "make", "model"));
+  }
 
   const estimateBtn = document.getElementById("estimate-btn");
   if (estimateBtn) estimateBtn.addEventListener("click", estimate);
@@ -77,34 +79,39 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-function autoLoadSavedData() {
+async function autoLoadSavedData() {
   const savedData = localStorage.getItem("MyPoliciumAppData");
   if (!savedData) return;
   try {
     const data = JSON.parse(savedData);
-    if (data.mileage) document.getElementById("mileage").value = data.mileage;
-    if (data.province) document.getElementById("province").value = data.province;
     
-    if (data.year) {
-      const yearSelect = document.getElementById("year");
-      if (yearSelect) {
-        yearSelect.value = data.year;
-        loadMakes().then(() => {
-          if (data.make) {
-            const makeSelect = document.getElementById("make");
-            makeSelect.value = data.make;
-            loadModels().then(() => {
-              if (data.model) {
-                const modelSelect = document.getElementById("model");
-                modelSelect.value = data.model;
-              }
-            });
-          }
-        });
+    // Guarded selectors
+    const mileageEl = document.getElementById("mileage");
+    const provinceEl = document.getElementById("province");
+    const yearEl = document.getElementById("year");
+    const makeEl = document.getElementById("make");
+    const modelEl = document.getElementById("model");
+
+    if (mileageEl && data.mileage) mileageEl.value = data.mileage;
+    if (provinceEl && data.province) provinceEl.value = data.province;
+    
+    if (yearEl && data.year) {
+      yearEl.value = data.year;
+      // Triggers makes but we wait for it
+      await loadMakes("year", "make", "model");
+      
+      if (makeEl && data.make) {
+        makeEl.value = data.make;
+        // Triggers models and we wait for it
+        await loadModels("year", "make", "model");
+        
+        if (modelEl && data.model) {
+          modelEl.value = data.model;
+        }
       }
     }
   } catch (e) {
-    console.warn("Could not parse saved calculator data.");
+    console.warn("Could not parse saved calculator data:", e);
   }
 }
 
@@ -125,12 +132,21 @@ const MAKE_API_MAPPING = {
   "Mercedes-AMG": "MERCEDES-BENZ"
 };
 
+// Request tracker to prevent stale async responses from overwriting the UI
+let modelRequestTracker = {};
+
+  // Removed handleLeadSubmission
+
 function loadMakes(yearId = "year", makeId = "make", modelId = "model") {
   const makeSelect = document.getElementById(makeId);
+  const modelSelect = document.getElementById(modelId);
+  
   if (!makeSelect) return Promise.resolve();
 
-  const modelSelect = document.getElementById(modelId);
-  if (modelSelect) modelSelect.innerHTML = '<option value="" disabled selected>Select Model</option>';
+  // Reset Model dropdown immediately to ensure consistency
+  if (modelSelect) {
+    modelSelect.innerHTML = '<option value="" disabled selected>Select Model</option>';
+  }
 
   const currentValue = makeSelect.value;
   makeSelect.innerHTML = '<option value="" disabled selected>Select Make</option>';
@@ -142,7 +158,7 @@ function loadMakes(yearId = "year", makeId = "make", modelId = "model") {
     makeSelect.appendChild(option);
   });
 
-  // Restore value if it exists in the new list
+  // Restore value if it exists in the new list (though usually year change means we want user to re-pick make/model)
   if (currentValue && APPROVED_MAKES.includes(currentValue)) {
     makeSelect.value = currentValue;
   }
@@ -151,35 +167,59 @@ function loadMakes(yearId = "year", makeId = "make", modelId = "model") {
 }
 
 function loadModels(yearId = "year", makeId = "make", modelId = "model") {
-  const year = document.getElementById(yearId).value;
-  const make = document.getElementById(makeId).value;
-  if (!year || !make) return Promise.resolve();
+  const modelSelect = document.getElementById(modelId);
+  const yearEl = document.getElementById(yearId);
+  const makeEl = document.getElementById(makeId);
 
-  // Use API mapping or fallback to selected make label
+  if (!modelSelect || !yearEl || !makeEl) return Promise.resolve();
+
+  // Reset to loading state immediately (Constraint #4)
+  modelSelect.innerHTML = '<option value="" disabled selected>Loading...</option>';
+
+  const year = yearEl.value;
+  const make = makeEl.value;
+
+  if (!year || !make) {
+    modelSelect.innerHTML = '<option value="" disabled selected>Select Model</option>';
+    return Promise.resolve();
+  }
+
+  // Request tracking to prevent race conditions (Constraint #4)
+  const requestId = Date.now();
+  modelRequestTracker[modelId] = requestId;
+
   const apiMake = MAKE_API_MAPPING[make] || make;
   const makeEncoded = encodeURIComponent(apiMake);
+
   return fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${makeEncoded}/modelyear/${year}?format=json`)
     .then(res => res.json())
     .then(data => {
-      const modelSelect = document.getElementById(modelId);
-      if (!modelSelect) return;
+      // Abort if a newer request has been started (Constraint #4)
+      if (modelRequestTracker[modelId] !== requestId) return;
+
       modelSelect.innerHTML = '<option value="" disabled selected>Select Model</option>';
+
+      if (!data.Results || data.Results.length === 0) {
+        const option = document.createElement("option");
+        option.textContent = "No models for this year/make";
+        option.disabled = true;
+        option.selected = true;
+        modelSelect.appendChild(option);
+        return;
+      }
 
       const sortedModels = data.Results.sort((a, b) => {
         const nameA = (a.Model_Name || "").trim().toUpperCase();
         const nameB = (b.Model_Name || "").trim().toUpperCase();
-        if (nameA < nameB) return -1;
-        if (nameA > nameB) return 1;
-        return 0;
+        return nameA.localeCompare(nameB);
       });
+
       const seenModels = new Set();
       sortedModels.forEach(m => {
         const rawName = m.Model_Name || "";
         const cleanName = rawName.trim();
         const upperName = cleanName.toUpperCase();
 
-        // Filter out commercial/heavy models if needed (optional but recommended)
-        // For now, we keep logic simple but ensure uniqueness
         if (cleanName && !seenModels.has(upperName)) {
           seenModels.add(upperName);
           const option = document.createElement("option");
@@ -188,16 +228,13 @@ function loadModels(yearId = "year", makeId = "make", modelId = "model") {
           modelSelect.appendChild(option);
         }
       });
-
-      if (!data.Results.length) {
-        const option = document.createElement("option");
-        option.textContent = "No models for this year/make";
-        option.disabled = true;
-        option.selected = true;
-        modelSelect.appendChild(option);
-      }
     })
-    .catch(err => console.error("Model fetch error:", err));
+    .catch(err => {
+      if (modelRequestTracker[modelId] === requestId) {
+        console.error("Model fetch error:", err);
+        modelSelect.innerHTML = '<option value="" disabled selected>Error loading models</option>';
+      }
+    });
 }
 
 // Helper for robust model matching
@@ -246,27 +283,34 @@ function decodeVIN() {
 
         // Populate the fields properly with Promises
         if (year) {
-          document.getElementById("year").value = year;
-          loadMakes().then(() => {
-            if (make) {
-              const makeSelect = document.getElementById("make");
-              const options = Array.from(makeSelect.options);
-              const matchingOption = options.find(opt => opt.value.trim().toUpperCase() === make.trim().toUpperCase());
-              if (matchingOption) {
-                makeSelect.value = matchingOption.value;
-                loadModels().then(() => {
-                  if (model) {
-                    const modelSelect = document.getElementById("model");
-                    const modOptions = Array.from(modelSelect.options);
-                    const modMatch = modOptions.find(opt => opt.value.trim().toUpperCase() === model.trim().toUpperCase() || opt.value.trim().toUpperCase().includes(model.trim().toUpperCase()));
-                    if (modMatch) {
-                      modelSelect.value = modMatch.value;
-                    }
+          const yearSelect = document.getElementById("year");
+          if (yearSelect) {
+            yearSelect.value = year;
+            loadMakes("year", "make", "model").then(() => {
+              if (make) {
+                const makeSelect = document.getElementById("make");
+                if (makeSelect) {
+                  const options = Array.from(makeSelect.options);
+                  const matchingOption = options.find(opt => opt.value.trim().toUpperCase() === make.trim().toUpperCase());
+                  if (matchingOption) {
+                    makeSelect.value = matchingOption.value;
+                    loadModels("year", "make", "model").then(() => {
+                      if (model) {
+                        const modelSelect = document.getElementById("model");
+                        if (modelSelect) {
+                          const modOptions = Array.from(modelSelect.options);
+                          const modMatch = modOptions.find(opt => opt.value.trim().toUpperCase() === model.trim().toUpperCase() || opt.value.trim().toUpperCase().includes(model.trim().toUpperCase()));
+                          if (modMatch) {
+                            modelSelect.value = modMatch.value;
+                          }
+                        }
+                      }
+                    });
                   }
-                });
+                }
               }
-            }
-          });
+            });
+          }
         }
 
         if (!year && !make && !model) {
@@ -283,26 +327,47 @@ function decodeVIN() {
 }
 
 function estimate() {
-  const yearRaw = document.getElementById("year").value;
-  const makeRaw = document.getElementById("make").value;
-  const modelRaw = document.getElementById("model").value;
-  const mileageRaw = document.getElementById("mileage").value;
-  const provinceRaw = document.getElementById("province").value;
-  const insurerOfferRaw = document.getElementById("insurer-offer") ? document.getElementById("insurer-offer").value : "";
+  const yearEl = document.getElementById("year");
+  const makeEl = document.getElementById("make");
+  const modelEl = document.getElementById("model");
+  const mileageEl = document.getElementById("mileage");
+  const provinceEl = document.getElementById("province");
+  const offerEl = document.getElementById("insurer-offer");
   const output = document.getElementById("output");
 
-  // Normalization
-  const year = yearRaw ? yearRaw.trim() : "";
-  const make = makeRaw ? makeRaw.trim() : "";
-  const model = modelRaw ? modelRaw.trim() : "";
-  const mileage = mileageRaw ? parseInt(mileageRaw.trim()) : 0;
-  const province = provinceRaw ? provinceRaw.trim() : "";
+  if (!output) return;
 
-  if (!year || !make || !model || model === "No models for this year/make") {
+  // Gather values with null safety
+  const yearRaw = yearEl ? yearEl.value : "";
+  const makeRaw = makeEl ? makeEl.value : "";
+  const modelRaw = modelEl ? modelEl.value : "";
+  const mileageRaw = mileageEl ? mileageEl.value : "";
+  const provinceRaw = provinceEl ? provinceEl.value : "";
+  const insurerOfferRaw = offerEl ? offerEl.value : "";
+
+  // Validation Logic (Constraint #5)
+  const isMileageEmpty = !mileageRaw || mileageRaw.trim() === "";
+  const isLoading = modelRaw === "Loading...";
+  const isNoModel = modelRaw === "" || modelRaw === "No models for this year/make" || modelRaw === "Error loading models";
+
+  if (!yearRaw || !makeRaw || isNoModel || isMileageEmpty || isLoading) {
     output.style.display = "block";
-    output.innerHTML = "<div class='result-note' style='color:red;'>Please select a valid Year, Make, and Model.</div>";
+    
+    let message = "Please fill in all required fields.";
+    if (isLoading) message = "Please wait for vehicle models to load.";
+    else if (isNoModel) message = "Please select a valid vehicle model.";
+    else if (isMileageEmpty) message = "Please provide the vehicle mileage.";
+
+    output.innerHTML = `<div class='result-note' style='color:#b91c1c; background:#fef2f2; padding:12px; border:1px solid #fecaca; border-radius:6px;'>${message}</div>`;
     return;
   }
+
+  // Normalization for calculation
+  const year = yearRaw.trim();
+  const make = makeRaw.trim();
+  const model = modelRaw.trim();
+  const mileage = parseInt(mileageRaw.trim());
+  const province = provinceRaw.trim();
 
   const currentYear = new Date().getFullYear();
   const age = currentYear - parseInt(year);
@@ -315,7 +380,7 @@ function estimate() {
   if (exotics.includes(makeUpper)) {
     output.style.display = "block";
     output.innerHTML = `
-      <div class='result-title' style='color: #b91c1c;'>Manual Valuation Required</div>
+      <div class='result-title' style='color: #b91c1c;'>Professional Appraisal Recommended</div>
       <div class='result-meta'><span>Vehicle:</span> <strong>${year} ${make} ${model}</strong></div>
       <div class='result-note' style='margin-top: 16px; color: var(--text-dark); background: #fee2e2; padding: 12px; border-radius: 6px; border: 1px solid #f87171;'>
         Rare, exotic, or collector vehicles are not accurately tracked by standard depreciation models. Please seek a professional appraisal.
@@ -533,52 +598,94 @@ function estimate() {
     let confidenceColor = "#10b981"; 
     if (confidenceResult === "Moderate") confidenceColor = "#f59e0b";
 
-    // --- Assessment Logic ---
-    const insurerOffer = insurerOfferRaw ? parseFloat(insurerOfferRaw.replace(/[^0-9.]/g, "")) : null;
-    let assessmentHtml = "";
-    
-    if (insurerOffer === null || isNaN(insurerOffer)) {
-      // Default Informational State
-      assessmentHtml = `
-        <div class="assessment-box">
-          <div class="assessment-title">Assessment</div>
-          <div class="assessment-explanation">
-            This estimate represents a typical market range for your vehicle. 
-            Compare this range to your insurer’s offer to determine if it is fair.
+      // --- Assessment & Next Step Logic ---
+      const insurerOffer = insurerOfferRaw ? parseFloat(insurerOfferRaw.replace(/[^0-9.]/g, "")) : null;
+      let assessmentHtml = "";
+      let nextStepHtml = "";
+      
+      if (insurerOffer === null || isNaN(insurerOffer)) {
+        // CASE 5: No Offer Provided
+        assessmentHtml = `
+          <div class="assessment-box">
+            <div class="assessment-title">Assessment</div>
+            <div class="assessment-explanation">
+              This estimate represents a typical market range for your vehicle. 
+              Compare this range to your insurer’s offer to determine if it is fair.
+            </div>
           </div>
-        </div>
-      `;
-    } else {
-      let verdict = "";
-      let toneClass = "";
-      let explanation = "";
-
-      if (insurerOffer < low) {
-        verdict = "Your offer may be below market value";
-        toneClass = "assessment-below";
-        explanation = "This offer falls below the expected market range for your vehicle.";
-      } else if (insurerOffer >= low && insurerOffer <= midpoint) {
-        verdict = "Your offer is on the lower end of market value";
-        toneClass = "assessment-caution";
-        explanation = "This offer is within range but below the midpoint of expected value.";
-      } else if (insurerOffer > midpoint && insurerOffer <= high) {
-        verdict = "Your offer appears to be within a reasonable range";
-        toneClass = "assessment-fair";
-        explanation = "This offer aligns with expected fair market value.";
-      } else if (insurerOffer > high) {
-        verdict = "Your offer is above typical market value";
-        toneClass = "assessment-fair";
-        explanation = "This offer exceeds typical market expectations.";
+        `;
+        nextStepHtml = `
+          <div class="next-step-box">
+            <div class="next-step-title">Compare your offer</div>
+            <div class="next-step-body">Enter your insurer’s offer above to see how it compares to the market range.</div>
+            <a href="article-total-loss.html" class="next-step-cta">Learn how settlements work</a>
+          </div>
+        `;
+      } else {
+        const p = Math.abs(((insurerOffer - midpoint) / midpoint) * 100);
+        const varianceRange = `Approximately ${Math.max(0, Math.floor(p - 2))}–${Math.ceil(p + 2)}%`;
+        
+        let verdict = "";
+        let toneClass = "";
+        let explanation = "";
+        let nsTitle = "";
+        let nsBody = "";
+        let nsCtaText = "";
+        let nsCtaLink = "";
+  
+        if (insurerOffer < low) {
+          // CASE 1: Offer < Low (BELOW MARKET)
+          verdict = "Offer appears below the estimated market range";
+          toneClass = "assessment-below";
+          explanation = `This offer is ${varianceRange} below expected market value for your vehicle.`;
+          nsTitle = "Review Comparables Carefully";
+          nsBody = "Your insurer’s offer appears to fall below the expected market range. You may wish to compare additional market listings before making a decision.";
+          nsCtaText = "How to Negotiate Your Total Loss";
+          nsCtaLink = "negotiate-total-loss.html";
+        } else if (insurerOffer >= low && insurerOffer <= midpoint) {
+          // CASE 2: Low <= Offer <= Midpoint (CAUTION)
+          verdict = "Offer appears on the lower end of market value";
+          toneClass = "assessment-caution";
+          explanation = `This offer is within range but ${varianceRange} below the typical market average.`;
+          nsTitle = "Review carefully";
+          nsBody = "This offer is within the estimated range but falls below the typical average. It may be helpful to verify the comparables used.";
+          nsCtaText = "What to Check Before Accepting";
+          nsCtaLink = "article-total-loss.html";
+        } else if (insurerOffer > midpoint && insurerOffer <= high) {
+          // CASE 3: Midpoint < Offer <= High (FAIR)
+          verdict = "Offer appears to be within a reasonable range";
+          toneClass = "assessment-fair";
+          explanation = `This offer aligns with expected fair market value (within ${varianceRange}).`;
+          nsTitle = "This aligns with market data";
+          nsBody = "Your offer falls within expected market value. Before accepting, ensure there are no missing features or condition adjustments.";
+          nsCtaText = "Final Checklist Before Accepting";
+          nsCtaLink = "article-total-loss.html";
+        } else if (insurerOffer > high) {
+          // CASE 4: Offer > High (STRONG)
+          verdict = "Offer above typical market data";
+          toneClass = "assessment-fair";
+          explanation = `This offer exceeds typical market expectations by ${varianceRange}.`;
+          nsTitle = "Strong offer";
+          nsBody = "Your insurer’s offer appears to be above typical market value. This is generally a strong outcome.";
+          nsCtaText = "What Happens After You Accept";
+          nsCtaLink = "what-happens-after-total-loss.html";
+        }
+  
+        assessmentHtml = `
+          <div class="assessment-box ${toneClass}">
+            <div class="assessment-title">Assessment</div>
+            <div class="assessment-verdict">${verdict}</div>
+            <div class="assessment-explanation">${explanation}</div>
+          </div>
+        `;
+        nextStepHtml = `
+          <div class="next-step-box">
+            <div class="next-step-title">${nsTitle}</div>
+            <div class="next-step-body">${nsBody}</div>
+            <a href="${nsCtaLink}" class="next-step-cta">${nsCtaText}</a>
+          </div>
+        `;
       }
-
-      assessmentHtml = `
-        <div class="assessment-box ${toneClass}">
-          <div class="assessment-title">Assessment</div>
-          <div class="assessment-verdict">${verdict}</div>
-          <div class="assessment-explanation">${explanation}</div>
-        </div>
-      `;
-    }
 
     let warningBoxHeader = "";
     if (showWarning) {
@@ -586,7 +693,7 @@ function estimate() {
         <div class="warning-box">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
           <div class="warning-content">
-            <span class="warning-title">Significant Valuation Gap Detected</span>
+            <span class="warning-title">Valuation Gap Detected</span>
             Your insurance offer may be underpriced by <strong>${formatter.format(underpaymentLow)} – ${formatter.format(underpaymentHigh)}</strong> based on current market patterns.
           </div>
         </div>
@@ -609,6 +716,7 @@ function estimate() {
       <div class='result-subtext'>This estimate reflects typical Canadian market conditions for similar vehicles.</div>
 
       ${assessmentHtml}
+      ${nextStepHtml}
 
       <div style='margin-bottom: 24px; font-size: 0.85rem; display: flex; align-items: center; gap: 6px;'>
         <div style="width: 10px; height: 10px; border-radius: 50%; background: ${confidenceColor};"></div>
@@ -636,11 +744,11 @@ function estimate() {
       </div>
 
       <div class="trust-boost">
-        Independent valuation • No insurance affiliation
+        Independent Educational Benchmark • No insurance affiliation
       </div>
 
       <div class='result-disclaimer'>
-        *This estimate is a data-driven benchmark. Actual cash value is determined by local comparables and specific vehicle condition.
+        *This estimate is a data-driven benchmark. Please note that this is an educational estimate. Actual cash value is determined by local comparables and specific vehicle condition. Each insurance company may have its own process and valuation method for calculating the actual cash value for your vehicle.
       </div>
     `;
   } catch (renderError) {
@@ -692,11 +800,18 @@ function toggleMobileMenu() {
  */
 const ARTICLES = [
   {
+    title: "What Happens If I Get Into an Accident in the USA as a Canadian?",
+    excerpt: "If you are a Canadian driver involved in an accident in the United States, your Canadian auto insurance may still respond. Here is what usually happens.",
+    url: "accident-in-usa-as-canadian.html",
+    publishDate: "2026-04-14",
+    createdDate: "2026-04-14"
+  },
+  {
     title: "Why Is My Car Insurance So Expensive?",
     excerpt: "Lately, it feels like everyone is asking the same question. Rates have been going up, and a lot of people are noticing it. Learn the factors behind insurance pricing.",
     url: "why-is-car-insurance-expensive.html",
-    publishDate: "2026-04-14",
-    createdDate: "2026-04-14"
+    publishDate: "2026-04-15",
+    createdDate: "2026-04-15"
   },
   {
     title: "What Is Actual Cash Value (ACV) and How Is It Calculated?",

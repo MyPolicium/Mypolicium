@@ -845,6 +845,162 @@ button:active {
   overflow: hidden;
 }
 
+.next-step-box {
+    margin-top: 24px;
+    padding: 24px;
+    border-radius: var(--radius-md);
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.next-step-title {
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin-bottom: 12px;
+    color: var(--primary-navy);
+    line-height: 1.2;
+}
+
+.next-step-body {
+    font-size: 0.95rem;
+    color: #475569;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.next-step-cta {
+    display: inline-block;
+    padding: 12px 20px;
+    background: var(--primary-blue);
+    color: #fff !important;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    text-align: center;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+}
+
+.next-step-cta:hover {
+    background: var(--secondary-blue);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(99, 102, 241, 0.25);
+}
+
+@media (max-width: 480px) {
+    .next-step-box {
+        padding: 20px 16px;
+    }
+    .next-step-cta {
+        width: 100%;
+    }
+}
+
+/* Lead Capture Elevation */
+.lead-capture-section {
+    margin-top: 32px;
+    padding: 28px;
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.lead-capture-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--primary-navy);
+}
+
+.lead-capture-body {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.email-signup-group {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.email-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.email-input:focus {
+    border-color: var(--primary-blue);
+}
+
+.lead-submit-btn {
+    padding: 12px 24px;
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.lead-submit-btn:hover {
+    background: var(--secondary-blue);
+}
+
+.lead-submit-btn.sent {
+    background: #10b981;
+    cursor: default;
+}
+
+.lead-microcopy {
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+
+.lead-success-msg {
+    margin-top: 12px;
+    font-size: 0.9rem;
+    color: #059669;
+    font-weight: 500;
+    display: none;
+}
+
+.pdf-placeholder-btn {
+    margin-top: 24px;
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: #f1f5f9;
+    color: #64748b;
+    text-align: center;
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: default;
+    border: 1px dashed #cbd5e1;
+}
+
+@media (max-width: 480px) {
+    .email-signup-group {
+        flex-direction: column;
+    }
+    .lead-submit-btn {
+        width: 100%;
+    }
+}
+
 .result::after {
   content: '';
   position: absolute;
