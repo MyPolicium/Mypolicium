@@ -117,7 +117,7 @@ const htmlContent = `<!DOCTYPE html>
           A vehicle is declared a total loss (or "written off") when the cost to repair it exceeds a certain percentage of its current market value. This threshold is known as the "total loss formula" or the "salvage threshold," and it varies by province and by insurance carrier.
         </p>
         <p>
-          In many cases, if the repair costs hit 70% to 80% of the vehicle's <a href="what-is-actual-cash-value.html">Actual Cash Value (ACV)</a>, the insurer will declare it a total loss. They do this because hidden damages often emerge during the repair process; if the initial estimate is already close to the vehicle's value, it is financially safer for the insurer to simply pay out the ACV.
+          In many cases, if the repair costs hit 70% to 80% of the vehicle's <a href="what-is-actual-cash-value.html">Actual Cash Value (ACV)</a>, the insurer typically declares it a total loss. They do this because hidden damages often emerge during the repair process; if the initial estimate is already close to the vehicle's value, it is financially safer for the insurer to simply pay out the ACV.
         </p>
         
         <h2 id="section-2">2. How Actual Cash Value (ACV) Works</h2>
@@ -158,15 +158,15 @@ const htmlContent = `<!DOCTYPE html>
 
         <h2 id="section-5">5. What Happens to Your Car? (Salvage Titles)</h2>
         <p>
-          When you accept a total loss payout, you are essentially selling the damaged vehicle to the insurance company. They will tow it to a salvage auction (like Copart or Impact Auto) to recoup some of their losses.
+          When you accept a total loss payout, you are essentially selling the damaged vehicle to the insurance company. They typically will tow it to a salvage auction (like Copart or Impact Auto) to recoup some of their losses.
         </p>
         <p>
-          If you wish to <a href="salvage-title-keep-total-loss-vehicle.html">keep your total loss vehicle</a>, you can negotiate an "owner-retained salvage" settlement. The insurer will calculate your ACV, subtract the amount they would have made at the salvage auction, and pay you the difference. Your vehicle will then be branded with a "Salvage" title, meaning it cannot be legally driven until it is fully repaired, passes a rigorous structural safety inspection, and is rebranded as "Rebuilt."
+          If you wish to <a href="salvage-title-keep-total-loss-vehicle.html">keep your total loss vehicle</a>, you can negotiate an "owner-retained salvage" settlement. The insurer typically calculates your ACV, subtracts the amount they would have made at the salvage auction, and pays you the difference. Your vehicle will then be branded with a "Salvage" title, meaning it cannot be legally driven until it is fully repaired, passes a rigorous structural safety inspection, and is rebranded as "Rebuilt."
         </p>
 
         <h2 id="section-6">6. The Role of Deductibles and GAP Insurance</h2>
         <p>
-          Your settlement will be reduced by your policy deductible. If you have a $500 collision deductible, a $10,000 ACV settlement becomes a $9,500 payout. <a href="how-do-car-insurance-deductibles-work.html">Learn more about how deductibles apply to claims.</a>
+          Your settlement typically will be reduced by your policy deductible. If you have a $500 collision deductible, a $10,000 ACV settlement becomes a $9,500 payout. <a href="how-do-car-insurance-deductibles-work.html">Learn more about how deductibles apply to claims.</a>
         </p>
         <p>
           If you are financing or leasing your vehicle, the settlement check is sent directly to your lienholder first. If you owe more on the loan than the ACV of the car, you are left with "negative equity." This is where <a href="gap-insurance.html">GAP Insurance</a> is vital—it covers the difference between the ACV payout and your remaining loan balance, protecting you from paying a car loan on a vehicle you no longer own.

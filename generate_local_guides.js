@@ -25,10 +25,10 @@ const pages = [
       <p>By Ontario law (the Highway Traffic Act), any collision where the combined damage to all vehicles appears to exceed $2,000 must be reported to the police or a Collision Reporting Centre. If there are no injuries and the vehicles are drivable, police will often instruct you to move off the road and head directly to a local CRC within 24 hours.</p>
 
       <h2>3. At-Fault Accidents and Collision Coverage</h2>
-      <p>If the insurance companies determine you are entirely or partially at fault based on the Ontario Fault Determination Rules, your DCPD coverage will not apply to the at-fault portion. You will need to rely on your optional <a href="comprehensive-vs-collision-insurance.html">Collision coverage</a> to repair your vehicle, and you will be responsible for paying your deductible.</p>
+      <p>If the insurance companies determine you are entirely or partially at fault based on the Ontario Fault Determination Rules, your DCPD coverage typically will not apply to the at-fault portion. You will need to rely on your optional <a href="comprehensive-vs-collision-insurance.html">Collision coverage</a> to repair your vehicle, and you will be responsible for paying your deductible.</p>
 
       <h2>4. Total Loss Settlements</h2>
-      <p>If your vehicle is severely damaged, your insurer may declare it a total loss. In Ontario, they are required to pay you the <a href="what-is-actual-cash-value.html">Actual Cash Value (ACV)</a> of the vehicle exactly as it stood just before the collision. You have the right to request their valuation report and dispute their settlement offer if it does not reflect the realistic Ontario market for your specific make and trim.</p>
+      <p>If your vehicle is severely damaged, your insurer may declare it a total loss. In many cases, if the repair costs hit 70% to 80% of the vehicle's <a href="what-is-actual-cash-value.html">Actual Cash Value (ACV)</a>, the insurer typically declares it a total loss. They do this because hidden damages often emerge during the repair process; if the initial estimate is already close to the vehicle's value, it is financially safer for the insurer to simply pay out the ACV.</p>
     `,
     faqs: [
       { q: 'Do I pay a deductible if I am not at fault in Ontario?', a: 'No. If you are 100% not at-fault and the other driver is identified and insured in Ontario, your DCPD coverage handles the repairs without a deductible.' },
@@ -133,7 +133,7 @@ const pages = [
       <p>Ottawa experiences severe winter weather, which drastically changes collision dynamics. Even if weather conditions contributed to the accident (e.g., sliding on black ice), the Ontario Fault Determination Rules still apply. An insurer may still deem you at fault for failing to maintain control of the vehicle, which will require <a href="comprehensive-vs-collision-insurance.html">Collision coverage</a> for repairs.</p>
 
       <h2>3. Navigating the Claims Process</h2>
-      <p>After reporting the collision, you will open a claim with your own insurer. Under Ontario's "no-fault" framework, your insurer will assess the damage. If your vehicle is deemed a total loss, the settlement should reflect the <a href="what-is-actual-cash-value.html">Actual Cash Value</a> of the vehicle in the Ottawa and Eastern Ontario market.</p>
+      <p>After reporting the collision, you will open a claim with your own insurer. Under Ontario's "no-fault" framework, your insurer typically assesses the damage. If your vehicle is deemed a total loss, the settlement should reflect the <a href="what-is-actual-cash-value.html">Actual Cash Value</a> of the vehicle in the Ottawa and Eastern Ontario market.</p>
     `,
     faqs: [
       { q: 'Where are the CRCs in Ottawa?', a: 'Ottawa has three main Collision Reporting Centres: Central (474 Elgin St), East (3343 St. Joseph Blvd), and West (211 Huntmar Dr). Check the Ottawa Police website for current operating hours.' },

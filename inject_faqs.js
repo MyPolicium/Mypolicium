@@ -137,7 +137,7 @@ const faqsData = {
     },
     {
       q: "What happens if my car is totaled in the US?",
-      a: "The claims process is the same, but the logistics are complex. Your insurer will determine the actual cash value based on Canadian market data, pay out the claim in Canadian dollars, and handle the cross-border salvage disposal of the wrecked vehicle."
+      a: "The claims process is the same, but the logistics are complex. Your insurer typically determines the actual cash value based on Canadian market data, handles the settlement in Canadian dollars, and manages the cross-border salvage disposal of the wrecked vehicle."
     },
     {
       q: "How long does a cross-border insurance claim take?",
