@@ -1,4 +1,24 @@
-<!DOCTYPE html>
+const fs = require('fs');
+
+const scriptContent = fs.readFileSync('c:/Users/DAVID/OneDrive/Desktop/MYPOLICIUM/script.js', 'utf8');
+const startIndex = scriptContent.indexOf('const ARTICLES = [');
+const endIndex = scriptContent.indexOf('];', startIndex) + 2;
+const arrayStr = scriptContent.substring(startIndex, endIndex).replace('const ARTICLES = ', '');
+
+let ARTICLES;
+try {
+  ARTICLES = eval(arrayStr);
+} catch (e) {
+  console.error("Error parsing ARTICLES:", e);
+  process.exit(1);
+}
+
+let seoLinksHtml = '';
+ARTICLES.forEach(article => {
+  seoLinksHtml += `        <li><a href="${article.url}">${article.title}</a></li>\n`;
+});
+
+const learnHtml = `<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -14,7 +34,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Learn | MyPolicium</title>
-  <meta name="description" content="Explore our comprehensive library of auto insurance guides. Learn about total loss claims, actual cash value, deductibles, and the repair process.">
 
   <!-- Favicon -->
   <link rel="icon" type="image/jpeg" href="Logo1.jpg">
@@ -29,16 +48,6 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="index.css">
-  
-  
-  <!-- SEO & Social Metadata (Auto-Generated) -->
-  <link rel="canonical" href="https://mypolicium.com/learn.html">
-  <meta property="og:title" content="Learn | MyPolicium">
-  <meta property="og:description" content="Explore our comprehensive library of auto insurance guides. Learn about total loss claims, actual cash value, deductibles, and the repair process.">
-  <meta property="og:url" content="https://mypolicium.com/learn.html">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="MyPolicium">
-  <meta property="og:image" content="https://mypolicium.com/Logo1.jpg">
 </head>
 
 <body>
@@ -58,11 +67,11 @@
         <line x1="3" y1="18" x2="21" y2="18"></line>
       </svg>
     </button>
-        <nav class="nav-links">
+    <nav class="nav-links">
       <a href="index.html">Home</a>
       <a href="calculator.html">Calculator</a>
       <a href="learn.html">Learn</a>
-      <a href="about.html">About</a>
+      <a href="privacy.html">Privacy</a>
     </nav>
   </header>
 
@@ -78,16 +87,6 @@
         <input type="text" id="learn-search" class="search-input" placeholder="Search for articles, topics, or terms...">
       </div>
       
-      <div class="popular-topics">
-        <span class="popular-topics-label">Trending:</span>
-        <button onclick="setPopularTopic('Total Loss')">Total Loss</button>
-        <button onclick="setPopularTopic('DCPD')">DCPD</button>
-        <button onclick="setPopularTopic('Deductible')">Deductibles</button>
-        <button onclick="setPopularTopic('GAP Insurance')">GAP</button>
-        <button onclick="setPopularTopic('Minor Accident')">Minor Accident</button>
-        <button onclick="setPopularTopic('Comparables')">Comparables</button>
-      </div>
-      
       <div class="category-chips">
         <button class="category-chip active" data-category="All" onclick="setCategoryFilter('All')">All Topics</button>
         <button class="category-chip" data-category="Total Loss & Vehicle Value" onclick="setCategoryFilter('Total Loss & Vehicle Value')">Total Loss & Value</button>
@@ -98,13 +97,6 @@
         <button class="category-chip" data-category="Accident Scenarios" onclick="setCategoryFilter('Accident Scenarios')">Accident Scenarios</button>
         <button class="category-chip" data-category="Repair & Body Shop Process" onclick="setCategoryFilter('Repair & Body Shop Process')">Repair Process</button>
       </div>
-    </div>
-
-    <!-- Cornerstone Articles Target -->
-    <div class="cornerstone-section">
-      <h2 class="cornerstone-header">Cornerstone Guides</h2>
-      <p class="cornerstone-subtitle">Comprehensive, long-form educational resources.</p>
-      <div id="cornerstone-articles-container"></div>
     </div>
 
     <!-- Featured Articles Target -->
@@ -165,45 +157,13 @@
     <nav class="seo-directory" aria-label="Article Directory">
       <h2>Complete Article Directory</h2>
       <ul id="seo-links-list">
-        <li><a href="what-is-subrogation-insurance.html">What Is Subrogation in Car Insurance Claims?</a></li>
-        <li><a href="how-to-read-auto-insurance-repair-estimate.html">How to Read an Auto Insurance Repair Estimate</a></li>
-        <li><a href="how-long-to-settle-insurance-claim.html">How Long Does an Insurance Company Have to Settle a Claim?</a></li>
-        <li><a href="at-fault-vs-not-at-fault-insurance.html">At-Fault vs. Not-At-Fault Accidents: How They Affect Insurance Rates</a></li>
-        <li><a href="should-i-file-claim-minor-accident.html">Should I File an Insurance Claim for a Minor Accident?</a></li>
-        <li><a href="how-to-lower-car-insurance-premium.html">How to Lower Your Car Insurance Premium Legally</a></li>
-        <li><a href="why-is-car-insurance-expensive.html">Why Is My Car Insurance So Expensive?</a></li>
-        <li><a href="how-do-speeding-tickets-affect-insurance.html">How Do Speeding Tickets Affect Car Insurance Rates?</a></li>
-        <li><a href="salvage-title-keep-total-loss-vehicle.html">What Is a Salvage Title and Can You Keep Your Total Loss Vehicle?</a></li>
-        <li><a href="dispute-total-loss-value.html">What Happens If I Disagree With My Total Loss Valuation?</a></li>
-        <li><a href="how-to-find-comparables-total-loss.html">How to Find Comparables for a Total Loss Vehicle</a></li>
-        <li><a href="accident-in-usa-as-canadian.html">What Happens If You Get Into an Accident in the USA as a Canadian?</a></li>
-        <li><a href="opcf-20-loss-of-use-coverage.html">What Is OPCF 20 Loss of Use Coverage?</a></li>
-        <li><a href="dcpd-coverage.html">What Is Direct Compensation Property Damage (DCPD)?</a></li>
-        <li><a href="how-do-car-insurance-deductibles-work.html">How Do Car Insurance Deductibles Work?</a></li>
-        <li><a href="gap-insurance.html">What Is GAP Insurance and Do You Need It?</a></li>
-        <li><a href="comprehensive-vs-collision-insurance.html">Comprehensive vs. Collision Insurance: What's the Difference?</a></li>
-        <li><a href="someone-else-driving-my-car-accident.html">What Happens If Someone Else Drives My Car and Crashes?</a></li>
-        <li><a href="hit-by-uninsured-driver.html">What To Do If You're Hit By an Uninsured Driver</a></li>
-        <li><a href="rear-end-collisions-who-is-at-fault.html">Rear-End Collisions: Who Is At Fault?</a></li>
-        <li><a href="what-happens-if-someone-hits-your-parked-car.html">What Happens If Someone Hits Your Parked Car?</a></li>
-        <li><a href="what-is-actual-cash-value.html">What Is Actual Cash Value (ACV) and How Is It Calculated?</a></li>
-        <li><a href="article-opcf-43.html">What Is OPCF 43 Depreciation Waiver and Is It Worth It?</a></li>
-        <li><a href="what-happens-after-total-loss.html">What Happens After Your Car Is Declared a Total Loss?</a></li>
-        <li><a href="negotiate-total-loss.html">Can You Negotiate a Total Loss Settlement?</a></li>
-        <li><a href="article-total-loss.html">How Much Will Insurance Pay for Your Car After a Total Loss?</a></li>
-      </ul>
+${seoLinksHtml}      </ul>
     </nav>
   </main>
 
-    <footer>
-    <div style="margin-bottom: 32px; display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; font-size: 0.9rem;">
-      <a href="about.html" style="color: var(--text-light); text-decoration: none; transition: color 0.2s ease;">About</a>
-      <a href="how-mypolicium-works.html" style="color: var(--text-light); text-decoration: none; transition: color 0.2s ease;">How MyPolicium Works</a>
-      <a href="learn.html" style="color: var(--text-light); text-decoration: none; transition: color 0.2s ease;">Learn Hub</a>
-      <a href="privacy.html" style="color: var(--text-light); text-decoration: none; transition: color 0.2s ease;">Privacy Policy</a>
-    </div>
+  <footer>
     <p>&copy; 2026 MyPolicium. Empowering drivers through transparency.</p>
-    <p><a href="mailto:david@mypolicium.com" style="color: var(--primary-blue); text-decoration: none;">david@mypolicium.com</a></p>
+    <p><a href="mailto:david@mypolicium.com">david@mypolicium.com</a></p>
     <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 16px; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.5;">This website is for informational and educational purposes only and does not represent any insurance company or employer. All information is based on general industry knowledge and publicly available concepts.</p>
   </footer>
 
@@ -211,3 +171,7 @@
 </body>
 
 </html>
+`;
+
+fs.writeFileSync('c:/Users/DAVID/OneDrive/Desktop/MYPOLICIUM/learn.html', learnHtml, 'utf8');
+console.log('Successfully updated learn.html');
