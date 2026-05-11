@@ -85,10 +85,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const mileage = document.getElementById("qs-mileage").value;
         const province = document.getElementById("qs-province").value;
 
+        const qsError = document.getElementById("qs-error");
         if (!year || !make || !model) {
-          alert("Please select Year, Make, and Model to continue.");
+          if (qsError) {
+            qsError.textContent = "Please select Year, Make, and Model to continue.";
+            qsError.style.display = "block";
+          }
           return;
         }
+        if (qsError) qsError.style.display = "none";
 
         const appData = { year, make, model, mileage, province };
         localStorage.setItem("MyPoliciumAppData", JSON.stringify(appData));
@@ -737,8 +742,7 @@ function estimate() {
       `;
     }
 
-    output.style.display = "block";
-    output.innerHTML = `
+    const finalHtml = `
       <div class='result-title'>Estimated Fair Market Value Range</div>
       <div class='result-range'>${resultRange}</div>
       <div class='result-subtext'>This estimate reflects typical Canadian market conditions for similar vehicles.</div>
@@ -779,6 +783,30 @@ function estimate() {
         *This estimate is a data-driven benchmark. Please note that this is an educational estimate. Actual cash value is determined by local comparables and specific vehicle condition. Each insurance company may have its own process and valuation method for calculating the actual cash value for your vehicle.
       </div>
     `;
+    
+    // Simulate Processing State
+    const estimateBtn = document.getElementById("estimate-btn");
+    if (estimateBtn) {
+      estimateBtn.disabled = true;
+      estimateBtn.style.opacity = '0.7';
+      estimateBtn.textContent = "Analyzing market conditions...";
+    }
+    
+    output.style.display = "block";
+    output.innerHTML = `<div class="loading-state-container">
+      <div class="loading-shimmer-pulse"></div>
+      <p style="color: var(--text-muted); font-size: 1rem; font-weight: 500;">Cross-referencing regional market data...</p>
+    </div>`;
+    
+    setTimeout(() => {
+      output.innerHTML = finalHtml;
+      if (estimateBtn) {
+        estimateBtn.disabled = false;
+        estimateBtn.style.opacity = '1';
+        estimateBtn.textContent = "Calculate Fair Market Value";
+      }
+    }, 600);
+
   } catch (renderError) {
     console.error("Result rendering error:", renderError);
     output.style.display = "block";
@@ -894,8 +922,8 @@ const ARTICLES = [
     title: "What Is Subrogation in Car Insurance Claims?",
     excerpt: "Learn what subrogation means in car insurance, how insurers recover costs from at-fault drivers, and how you might get your deductible back.",
     url: "what-is-subrogation-insurance.html",
-    publishDate: "2026-05-30",
-    createdDate: "2026-05-30",
+    publishDate: "2026-05-01",
+    createdDate: "2026-05-01",
     category: "Claims Process",
     featured: false,
     tags: ["claims-process"]
@@ -904,8 +932,8 @@ const ARTICLES = [
     title: "How to Read an Auto Insurance Repair Estimate",
     excerpt: "Confused by your auto repair estimate? Learn how to decode OEM vs aftermarket parts, labour times, paint blending, and why supplements happen during claims.",
     url: "how-to-read-auto-insurance-repair-estimate.html",
-    publishDate: "2026-05-29",
-    createdDate: "2026-05-29",
+    publishDate: "2026-05-01",
+    createdDate: "2026-05-01",
     category: "Repair & Body Shop Process",
     featured: false,
     tags: ["repair-process"]
@@ -914,8 +942,8 @@ const ARTICLES = [
     title: "How Long Does an Insurance Company Have to Settle a Claim?",
     excerpt: "Waiting on a car insurance payout? Learn how long insurers have to settle a claim, what causes repair delays, and how the total loss timeline works.",
     url: "how-long-to-settle-insurance-claim.html",
-    publishDate: "2026-05-28",
-    createdDate: "2026-05-28",
+    publishDate: "2026-05-01",
+    createdDate: "2026-05-01",
     category: "Claims Process",
     featured: true,
     tags: ["claims-process"]
@@ -924,8 +952,8 @@ const ARTICLES = [
     title: "At-Fault vs. Not-At-Fault Accidents: How They Affect Insurance Rates",
     excerpt: "Learn the difference between at-fault and not-at-fault accidents and how insurance companies determine if a claim will increase your premium.",
     url: "at-fault-vs-not-at-fault-insurance.html",
-    publishDate: "2026-05-27",
-    createdDate: "2026-05-27",
+    publishDate: "2026-05-09",
+    createdDate: "2026-05-09",
     category: "Insurance Pricing & Premiums",
     featured: false,
     tags: ["dcpd","fault"]
@@ -934,8 +962,8 @@ const ARTICLES = [
     title: "Should I File an Insurance Claim for a Minor Accident?",
     excerpt: "Deciding whether to file an insurance claim for a minor scrape or fender bender? Learn the hidden costs, risks, and factors to consider before calling your insurer.",
     url: "should-i-file-claim-minor-accident.html",
-    publishDate: "2026-05-26",
-    createdDate: "2026-05-26",
+    publishDate: "2026-05-01",
+    createdDate: "2026-05-01",
     category: "Accident Scenarios",
     featured: false,
     tags: ["claims-process"]
@@ -944,8 +972,8 @@ const ARTICLES = [
     title: "How to Lower Your Car Insurance Premium Legally",
     excerpt: "Learn practical, legitimate ways to lower your car insurance premium without resorting to gimmicks or sacrificing essential coverage.",
     url: "how-to-lower-car-insurance-premium.html",
-    publishDate: "2026-05-25",
-    createdDate: "2026-05-25",
+    publishDate: "2026-05-01",
+    createdDate: "2026-05-01",
     category: "Insurance Pricing & Premiums",
     featured: true,
     tags: ["pricing"]
@@ -954,8 +982,8 @@ const ARTICLES = [
     title: "Why Is My Car Insurance So Expensive?",
     excerpt: "Learn exactly how insurance companies calculate your auto insurance premium and the hidden factors that make car insurance so expensive.",
     url: "why-is-car-insurance-expensive.html",
-    publishDate: "2026-05-24",
-    createdDate: "2026-05-24",
+    publishDate: "2026-05-01",
+    createdDate: "2026-05-01",
     category: "Insurance Pricing & Premiums",
     featured: false,
     tags: ["pricing"]
@@ -964,8 +992,8 @@ const ARTICLES = [
     title: "How Do Speeding Tickets Affect Car Insurance Rates?",
     excerpt: "Learn exactly how speeding tickets and other driving convictions affect your car insurance premium and how insurers evaluate driving risk.",
     url: "how-do-speeding-tickets-affect-insurance.html",
-    publishDate: "2026-05-23",
-    createdDate: "2026-05-23",
+    publishDate: "2026-05-01",
+    createdDate: "2026-05-01",
     category: "Insurance Pricing & Premiums",
     featured: false,
     tags: ["pricing"]
@@ -974,8 +1002,8 @@ const ARTICLES = [
     title: "What Is a Salvage Title and Can You Keep Your Total Loss Vehicle?",
     excerpt: "Learn what a salvage title is, how owner-retained salvage buybacks work, and whether keeping your totaled car makes financial sense.",
     url: "salvage-title-keep-total-loss-vehicle.html",
-    publishDate: "2026-05-22",
-    createdDate: "2026-05-22",
+    publishDate: "2026-05-08",
+    createdDate: "2026-05-08",
     category: "Total Loss & Vehicle Value",
     featured: false,
     tags: ["total-loss"]
@@ -984,8 +1012,8 @@ const ARTICLES = [
     title: "What Happens If I Disagree With My Total Loss Valuation?",
     excerpt: "Learn what happens if you disagree with your insurance company's total loss settlement offer and how to review the valuation process.",
     url: "dispute-total-loss-value.html",
-    publishDate: "2026-05-21",
-    createdDate: "2026-05-21",
+    publishDate: "2026-05-04",
+    createdDate: "2026-05-04",
     category: "Total Loss & Vehicle Value",
     featured: false,
     tags: ["total-loss","acv"]
@@ -994,8 +1022,8 @@ const ARTICLES = [
     title: "How to Find Comparables for a Total Loss Vehicle",
     excerpt: "Learn how insurance companies use comparable vehicles to determine your car's actual cash value after a total loss.",
     url: "how-to-find-comparables-total-loss.html",
-    publishDate: "2026-05-20",
-    createdDate: "2026-05-20",
+    publishDate: "2026-05-02",
+    createdDate: "2026-05-02",
     category: "Total Loss & Vehicle Value",
     featured: false,
     tags: ["total-loss","acv"]
@@ -1004,8 +1032,8 @@ const ARTICLES = [
     title: "What Happens If You Get Into an Accident in the USA as a Canadian?",
     excerpt: "Learn how Canadian auto insurance works if you get into an accident in the USA, including liability, rentals, and total loss complications.",
     url: "accident-in-usa-as-canadian.html",
-    publishDate: "2026-05-19",
-    createdDate: "2026-05-19",
+    publishDate: "2026-05-01",
+    createdDate: "2026-05-01",
     category: "Cross-Border & Travel",
     featured: false,
     tags: ["insurance-basics"]
@@ -1014,8 +1042,8 @@ const ARTICLES = [
     title: "What Is OPCF 20 Loss of Use Coverage?",
     excerpt: "Learn what OPCF 20 Loss of Use coverage is, how rental reimbursement works during an insurance claim, and what happens if your rental limit runs out.",
     url: "opcf-20-loss-of-use-coverage.html",
-    publishDate: "2026-05-18",
-    createdDate: "2026-05-18",
+    publishDate: "2026-04-30",
+    createdDate: "2026-04-30",
     category: "Ontario Auto Insurance",
     featured: false,
     tags: ["rental-coverage","coverage-basics"]
@@ -1024,8 +1052,8 @@ const ARTICLES = [
     title: "What Is Direct Compensation Property Damage (DCPD)?",
     excerpt: "Learn what Direct Compensation Property Damage (DCPD) is, how Ontario's no-fault insurance system works, and who actually pays for your car repairs.",
     url: "dcpd-coverage.html",
-    publishDate: "2026-05-17",
-    createdDate: "2026-05-17",
+    publishDate: "2026-04-15",
+    createdDate: "2026-04-15",
     category: "Ontario Auto Insurance",
     featured: false,
     tags: ["dcpd"]
@@ -1034,8 +1062,8 @@ const ARTICLES = [
     title: "How Do Car Insurance Deductibles Work?",
     excerpt: "Learn how car insurance deductibles work, how they affect your premium, and how to choose the right deductible for your vehicle.",
     url: "how-do-car-insurance-deductibles-work.html",
-    publishDate: "2026-05-16",
-    createdDate: "2026-05-16",
+    publishDate: "2026-04-14",
+    createdDate: "2026-04-14",
     category: "Coverage Basics",
     featured: false,
     tags: ["deductibles"]
@@ -1044,8 +1072,8 @@ const ARTICLES = [
     title: "What Is GAP Insurance and Do You Need It?",
     excerpt: "Learn what GAP insurance is, how it covers the difference between your car loan and actual cash value, and if you actually need it.",
     url: "gap-insurance.html",
-    publishDate: "2026-05-15",
-    createdDate: "2026-05-15",
+    publishDate: "2026-04-18",
+    createdDate: "2026-04-18",
     category: "Coverage Basics",
     featured: false,
     tags: ["gap-insurance"]
@@ -1054,8 +1082,8 @@ const ARTICLES = [
     title: "Comprehensive vs. Collision Insurance: What\'s the Difference?",
     excerpt: "Learn the difference between comprehensive and collision auto insurance, what each coverage protects, and how to decide if you still need them.",
     url: "comprehensive-vs-collision-insurance.html",
-    publishDate: "2026-05-14",
-    createdDate: "2026-05-14",
+    publishDate: "2026-04-20",
+    createdDate: "2026-04-20",
     category: "Coverage Basics",
     featured: false,
     tags: ["coverage-basics"]
@@ -1064,8 +1092,8 @@ const ARTICLES = [
     title: "What Happens If Someone Else Drives My Car and Crashes?",
     excerpt: "Learn what happens if a friend or family member crashes your car, how permissive use works, and whose insurance pays for the damage.",
     url: "someone-else-driving-my-car-accident.html",
-    publishDate: "2026-05-13",
-    createdDate: "2026-05-13",
+    publishDate: "2026-04-22",
+    createdDate: "2026-04-22",
     category: "Accident Scenarios",
     featured: false,
     tags: ["insurance-basics"]
@@ -1074,8 +1102,8 @@ const ARTICLES = [
     title: "What To Do If You're Hit By an Uninsured Driver",
     excerpt: "Learn what happens if you're hit by an uninsured driver, how uninsured motorist coverage works, and how to handle the insurance claim process.",
     url: "hit-by-uninsured-driver.html",
-    publishDate: "2026-05-12",
-    createdDate: "2026-05-12",
+    publishDate: "2026-04-24",
+    createdDate: "2026-04-24",
     category: "Accident Scenarios",
     featured: false,
     tags: ["uninsured-driver"]
@@ -1084,8 +1112,8 @@ const ARTICLES = [
     title: "Rear-End Collisions: Who Is At Fault?",
     excerpt: "Learn who is at fault in a rear-end collision, how your insurance handles the claim, and what happens when multiple cars are involved in a pileup.",
     url: "rear-end-collisions-who-is-at-fault.html",
-    publishDate: "2026-05-11",
-    createdDate: "2026-05-11",
+    publishDate: "2026-04-26",
+    createdDate: "2026-04-26",
     category: "Accident Scenarios",
     featured: false,
     tags: ["fault","coverage-basics"]
@@ -1094,8 +1122,8 @@ const ARTICLES = [
     title: "What Happens If Someone Hits Your Parked Car?",
     excerpt: "Discover what happens if someone hits your parked car, how insurance handles hit-and-runs, and if your rates will go up after a parking lot accident.",
     url: "what-happens-if-someone-hits-your-parked-car.html",
-    publishDate: "2026-05-10",
-    createdDate: "2026-05-10",
+    publishDate: "2026-04-28",
+    createdDate: "2026-04-28",
     category: "Accident Scenarios",
     featured: false,
     tags: ["dcpd"]
@@ -1104,8 +1132,8 @@ const ARTICLES = [
     title: "What Is Actual Cash Value (ACV) and How Is It Calculated?",
     excerpt: "If your car is written off, the amount you receive is based on Actual Cash Value. Learn how ACV is calculated and why it matters for your claim.",
     url: "what-is-actual-cash-value.html",
-    publishDate: "2026-04-14",
-    createdDate: "2026-04-14",
+    publishDate: "2026-04-02",
+    createdDate: "2026-04-02",
     category: "Total Loss & Vehicle Value",
     featured: true,
     tags: ["acv"]
@@ -1114,8 +1142,8 @@ const ARTICLES = [
     title: "What Is OPCF 43 Depreciation Waiver and Is It Worth It?",
     excerpt: "If you have a newer vehicle, there\'s a good chance you\'ve heard about OPCF 43, also known as a depreciation waiver. But what exactly is it, and is it actually worth having?",
     url: "article-opcf-43.html",
-    publishDate: "2026-04-11",
-    createdDate: "2026-04-11",
+    publishDate: "2026-04-12",
+    createdDate: "2026-04-12",
     category: "Ontario Auto Insurance",
     featured: false,
     tags: ["coverage-basics"]

@@ -69,7 +69,7 @@
   <main class="container">
     <div class="learn-header">
       <h1>Insurance Education Hub</h1>
-      <p>Knowledge is power when dealing with insurance claims. Learn how to navigate the process with confidence.</p>
+      <p>Most drivers only learn how total loss settlements work after their vehicle has already been written off. MyPolicium helps explain the process before you are forced to make decisions under pressure.</p>
     </div>
 
     <div class="learn-controls">
@@ -78,37 +78,30 @@
         <input type="text" id="learn-search" class="search-input" placeholder="Search for articles, topics, or terms...">
       </div>
       
-      <div class="popular-topics">
-        <span class="popular-topics-label">Trending:</span>
-        <button onclick="setPopularTopic('Total Loss')">Total Loss</button>
-        <button onclick="setPopularTopic('DCPD')">DCPD</button>
-        <button onclick="setPopularTopic('Deductible')">Deductibles</button>
-        <button onclick="setPopularTopic('GAP Insurance')">GAP</button>
-        <button onclick="setPopularTopic('Minor Accident')">Minor Accident</button>
-        <button onclick="setPopularTopic('Comparables')">Comparables</button>
-      </div>
-      
       <div class="category-chips">
-        <button class="category-chip active" data-category="All" onclick="setCategoryFilter('All')">All Topics</button>
-        <button class="category-chip" data-category="Total Loss & Vehicle Value" onclick="setCategoryFilter('Total Loss & Vehicle Value')">Total Loss & Value</button>
+        <span class="popular-topics-label" style="display:flex; align-items:center; font-size: 0.9rem; font-weight: 600; color: var(--primary-navy);">Browse Topics:</span>
+        <button class="category-chip active" data-category="All" onclick="setCategoryFilter('All')">All</button>
+        <button class="category-chip" data-category="Total Loss & Vehicle Value" onclick="setCategoryFilter('Total Loss & Vehicle Value')">Total Loss</button>
         <button class="category-chip" data-category="Claims Process" onclick="setCategoryFilter('Claims Process')">Claims Process</button>
-        <button class="category-chip" data-category="Insurance Pricing & Premiums" onclick="setCategoryFilter('Insurance Pricing & Premiums')">Pricing & Premiums</button>
         <button class="category-chip" data-category="Ontario Auto Insurance" onclick="setCategoryFilter('Ontario Auto Insurance')">Ontario</button>
-        <button class="category-chip" data-category="Coverage Basics" onclick="setCategoryFilter('Coverage Basics')">Coverage Basics</button>
-        <button class="category-chip" data-category="Accident Scenarios" onclick="setCategoryFilter('Accident Scenarios')">Accident Scenarios</button>
+        <button class="category-chip" onclick="setPopularTopic('Deductible')">Deductibles</button>
+        <button class="category-chip" onclick="setPopularTopic('DCPD')">DCPD</button>
+        <button class="category-chip" onclick="setPopularTopic('GAP Insurance')">GAP</button>
+        <button class="category-chip" data-category="Accident Scenarios" onclick="setCategoryFilter('Accident Scenarios')">Accidents</button>
         <button class="category-chip" data-category="Repair & Body Shop Process" onclick="setCategoryFilter('Repair & Body Shop Process')">Repair Process</button>
+        <button class="category-chip" data-category="Insurance Pricing & Premiums" onclick="setCategoryFilter('Insurance Pricing & Premiums')">Pricing</button>
       </div>
     </div>
 
     <!-- Cornerstone Articles Target -->
-    <div class="cornerstone-section">
+    <div class="cornerstone-section" style="display: none;">
       <h2 class="cornerstone-header">Cornerstone Guides</h2>
       <p class="cornerstone-subtitle">Comprehensive, long-form educational resources.</p>
       <div id="cornerstone-articles-container"></div>
     </div>
 
     <!-- Featured Articles Target -->
-    <div style="margin-bottom: 64px;">
+    <div style="margin-bottom: 64px; display: none;">
       <h2 class="category-header">Featured Guides</h2>
       <div id="featured-articles-container"></div>
     </div>
@@ -202,7 +195,7 @@
       <a href="learn.html" style="color: var(--text-light); text-decoration: none; transition: color 0.2s ease;">Learn Hub</a>
       <a href="privacy.html" style="color: var(--text-light); text-decoration: none; transition: color 0.2s ease;">Privacy Policy</a>
     </div>
-    <p>&copy; 2026 MyPolicium. Empowering drivers through transparency.</p>
+    <p>&copy; 2026 MyPolicium. Empowering drivers with clear, unbiased education on auto insurance claims and vehicle valuation.</p>
     <p><a href="mailto:david@mypolicium.com" style="color: var(--primary-blue); text-decoration: none;">david@mypolicium.com</a></p>
     <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 16px; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.5;">This website is for informational and educational purposes only and does not represent any insurance company or employer. All information is based on general industry knowledge and publicly available concepts.</p>
   </footer>
