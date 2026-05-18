@@ -1177,6 +1177,16 @@ const ARTICLES = [
     category: "Total Loss & Vehicle Value",
     featured: false,
     tags: ["total-loss"]
+  },
+  {
+    title: "ACV vs Replacement Cost: What Drivers Need to Know",
+    excerpt: "Learn the difference between actual cash value (ACV) and replacement cost, and why your auto insurance settlement is generally based on ACV after a total loss.",
+    url: "acv-vs-replacement-cost.html",
+    publishDate: "2026-05-08",
+    createdDate: "2026-05-08",
+    category: "Total Loss & Vehicle Value",
+    featured: false,
+    tags: ["acv", "total-loss"]
   }
 ];
 
