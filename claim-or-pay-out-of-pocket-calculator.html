@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C4162GS2PX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-C4162GS2PX');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claim or Pay Out of Pocket Calculator | MyPolicium</title>
+  <meta name="description" content="Estimate the financial tradeoff between filing an auto insurance claim and paying for minor vehicle damage out of pocket. Educational tool only.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="Logo1.jpg">
+  <link rel="shortcut icon" type="image/jpeg" href="Logo1.jpg">
+
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@500;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="index.css">
+  
+  <!-- SEO & Social Metadata -->
+  <link rel="canonical" href="https://mypolicium.com/claim-or-pay-out-of-pocket-calculator.html">
+  <meta property="og:title" content="Claim or Pay Out of Pocket Calculator | MyPolicium">
+  <meta property="og:description" content="Estimate the financial tradeoff between filing an auto insurance claim and paying for minor vehicle damage out of pocket. Educational tool only.">
+  <meta property="og:url" content="https://mypolicium.com/claim-or-pay-out-of-pocket-calculator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MyPolicium">
+  <meta property="og:image" content="https://mypolicium.com/Logo1.jpg">
+
+  <style>
+    .result-card {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      margin-top: 24px;
+    }
+    .result-card h3 {
+      margin-top: 0;
+      color: var(--primary-blue);
+    }
+    .result-metric {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 1rem;
+    }
+    .result-metric:last-of-type {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .result-metric strong {
+      font-weight: 600;
+    }
+    .result-assessment {
+      margin-top: 20px;
+      padding: 16px;
+      background: #eef2ff;
+      border-left: 4px solid var(--primary-blue);
+      border-radius: 4px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .disclaimer-box {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 24px;
+      text-align: center;
+      line-height: 1.5;
+    }
+    .preset-btns {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .preset-btns button {
+      flex: 1;
+      padding: 6px;
+      font-size: 0.85rem;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      cursor: pointer;
+      color: var(--text-color);
+      transition: all 0.2s;
+    }
+    .preset-btns button:hover {
+      background: #e2e8f0;
+    }
+    .form-group.inline-error input {
+      border-color: #ef4444;
+    }
+    .error-msg {
+      color: #ef4444;
+      font-size: 0.85rem;
+      margin-top: 4px;
+      display: none;
+    }
+    .input-prefix {
+      position: relative;
+    }
+    .input-prefix::before {
+      content: "$";
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+    .input-prefix input {
+      padding-left: 28px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <header>
+    <div class="brand-wrapper">
+      <a href="index.html">
+        <img src="Logo1.jpg" alt="MyPolicium Logo" class="brand-logo">
+      </a>
+    </div>
+    <button class="mobile-menu-btn" aria-label="Toggle navigation" onclick="toggleMobileMenu()">
+      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="calculator.html">Calculator</a>
+      <a href="learn.html">Learn</a>
+      <a href="about.html">About</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="calc-container">
+      <h1 class="calc-title">Claim or Pay Out of Pocket Calculator</h1>
+      <p style="text-align: center; margin-bottom: 24px; color: var(--text-muted);">Estimate the financial tradeoff between filing a claim and paying for minor damage yourself.</p>
+      
+      <div class="calculator-wrapper" style="max-width: 100%;">
+        <div class="card">
+          <form id="claim-calculator">
+
+            <div class="form-group" id="group-repair">
+              <label for="repair-cost">Estimated Repair Cost</label>
+              <div class="input-prefix">
+                <input type="number" id="repair-cost" placeholder="e.g. 1200" min="0">
+              </div>
+              <div class="error-msg">Please enter a valid repair cost.</div>
+            </div>
+
+            <div class="form-group" id="group-deductible">
+              <label for="deductible">Your Deductible</label>
+              <div class="input-prefix">
+                <input type="number" id="deductible" placeholder="e.g. 500" min="0">
+              </div>
+              <div class="preset-btns">
+                <button type="button" onclick="document.getElementById('deductible').value=500">$500</button>
+                <button type="button" onclick="document.getElementById('deductible').value=1000">$1,000</button>
+                <button type="button" onclick="document.getElementById('deductible').value=1500">$1,500</button>
+              </div>
+              <div class="error-msg">Please enter a valid deductible.</div>
+            </div>
+
+            <div class="form-group">
+              <label for="annual-premium">Current Annual Premium (Optional)</label>
+              <div class="input-prefix">
+                <input type="number" id="annual-premium" placeholder="e.g. 2000" min="0">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="premium-increase">Expected Premium Increase</label>
+              <select id="premium-increase">
+                <option value="0">0%</option>
+                <option value="0.10">10%</option>
+                <option value="0.20">20%</option>
+                <option value="0.30" selected>30% (Typical At-Fault)</option>
+                <option value="0.40">40%</option>
+                <option value="0.50">50%</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="affected-years">Estimated Years Premium May Be Affected</label>
+              <select id="affected-years">
+                <option value="0">0</option>
+                <option value="3">3 years</option>
+                <option value="5" selected>5 years</option>
+                <option value="6">6 years</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="third-party">Was another vehicle or person involved?</label>
+              <select id="third-party">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="injury">Is there any injury concern?</label>
+              <select id="injury">
+                <option value="no">No</option>
+                <option value="unsure">Unsure</option>
+                <option value="yes">Yes</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="fault">Fault Situation</label>
+              <select id="fault">
+                <option value="unsure">Not sure</option>
+                <option value="not-at-fault">Likely not at fault</option>
+                <option value="partial">Partially at fault</option>
+                <option value="at-fault">Likely at fault</option>
+                <option value="single">Single-vehicle accident</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="vehicle-age">Vehicle Age (Optional)</label>
+              <select id="vehicle-age">
+                <option value="newer">Newer (0-3 years)</option>
+                <option value="mid">Mid-age (4-8 years)</option>
+                <option value="older">Older (9+ years)</option>
+              </select>
+            </div>
+
+            <button type="button" id="calc-btn" class="btn btn-secondary btn-full">Compare Options</button>
+            
+          </form>
+
+          <!-- Results -->
+          <div id="output" style="display: none;"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div style="margin-bottom: 32px; display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; font-size: 0.9rem;">
+      <a href="about.html" style="color: var(--text-light); text-decoration: none; transition: color 0.2s ease;">About</a>
+      <a href="how-mypolicium-works.html" style="color: var(--text-light); text-decoration: none; transition: color 0.2s ease;">How MyPolicium Works</a>
+      <a href="learn.html" style="color: var(--text-light); text-decoration: none; transition: color 0.2s ease;">Learn Hub</a>
+      <a href="privacy.html" style="color: var(--text-light); text-decoration: none; transition: color 0.2s ease;">Privacy Policy</a>
+    </div>
+    <p>&copy; 2026 MyPolicium. Empowering drivers with clear, unbiased education on auto insurance claims and vehicle valuation.</p>
+    <p><a href="mailto:david@mypolicium.com" style="color: var(--primary-blue); text-decoration: none;">david@mypolicium.com</a></p>
+    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 16px; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.5;">This website is for informational and educational purposes only and does not represent any insurance company or employer. All information is based on general industry knowledge and publicly available concepts.</p>
+  </footer>
+
+  <script src="script.js?v=2"></script>
+  
+  <script>
+    // Contain all logic within an IIFE to prevent global scope pollution
+    (function() {
+      const calcBtn = document.getElementById('calc-btn');
+      const output = document.getElementById('output');
+      
+      const repairInput = document.getElementById('repair-cost');
+      const deductibleInput = document.getElementById('deductible');
+      
+      function formatCurrency(num) {
+        return '$' + num.toLocaleString('en-CA', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+      }
+
+      function validate() {
+        let isValid = true;
+        
+        // Reset errors
+        document.getElementById('group-repair').classList.remove('inline-error');
+        document.getElementById('group-repair').querySelector('.error-msg').style.display = 'none';
+        document.getElementById('group-deductible').classList.remove('inline-error');
+        document.getElementById('group-deductible').querySelector('.error-msg').style.display = 'none';
+
+        if (!repairInput.value || Number(repairInput.value) < 0) {
+          document.getElementById('group-repair').classList.add('inline-error');
+          document.getElementById('group-repair').querySelector('.error-msg').style.display = 'block';
+          isValid = false;
+        }
+
+        if (!deductibleInput.value || Number(deductibleInput.value) < 0) {
+          document.getElementById('group-deductible').classList.add('inline-error');
+          document.getElementById('group-deductible').querySelector('.error-msg').style.display = 'block';
+          isValid = false;
+        }
+
+        return isValid;
+      }
+
+      calcBtn.addEventListener('click', function() {
+        if (!validate()) {
+          output.style.display = 'none';
+          return;
+        }
+
+        const repairCost = Number(repairInput.value);
+        const deductible = Number(deductibleInput.value);
+        const annualPremium = Number(document.getElementById('annual-premium').value) || 0;
+        const premiumIncrease = Number(document.getElementById('premium-increase').value);
+        const affectedYears = Number(document.getElementById('affected-years').value);
+        const thirdParty = document.getElementById('third-party').value;
+        const injury = document.getElementById('injury').value;
+        const fault = document.getElementById('fault').value;
+        const vehicleAge = document.getElementById('vehicle-age').value;
+
+        // Calculations
+        const outOfPocketCost = repairCost;
+        let estimatedPremiumImpact = 0;
+        let premiumImpactText = 'Unknown (Premium not provided)';
+        let totalClaimCost = deductible;
+        let totalClaimText = formatCurrency(deductible) + ' + Unknown Premium Impact';
+
+        if (annualPremium > 0) {
+          estimatedPremiumImpact = annualPremium * premiumIncrease * affectedYears;
+          totalClaimCost = deductible + estimatedPremiumImpact;
+          premiumImpactText = formatCurrency(estimatedPremiumImpact) + ' over ' + affectedYears + ' years';
+          totalClaimText = formatCurrency(totalClaimCost);
+        }
+
+        let diff = Math.abs(outOfPocketCost - totalClaimCost);
+        let diffText = formatCurrency(diff);
+
+        // Directional Assessment Logic
+        let assessment = "";
+        let isInjuryCase = (injury === 'yes' || injury === 'unsure');
+        let isThirdPartyCase = (thirdParty === 'yes');
+
+        if (isInjuryCase) {
+          assessment = "If there is any injury concern, this tool should not be used as the basis for deciding not to report. Injury claims can develop over time.";
+        } else if (isThirdPartyCase) {
+          assessment = "Because another person or vehicle is involved, there may be risks with handling the matter privately. Hidden damage, delayed injury complaints, or documentation issues can change the situation.";
+        } else {
+          // No injury, no third party
+          if (repairCost <= deductible + (deductible * 0.2)) {
+            // Case 1: Repair close to or below deductible
+            assessment = "This may lean toward paying out of pocket, especially if no other person, vehicle, or injury is involved.";
+          } else if (annualPremium > 0 && totalClaimCost > repairCost + (repairCost * 0.2)) {
+            // Case 2: Claim cost over time much higher
+            assessment = "This may be a situation where paying privately is worth considering, but only if there is no injury concern and no third-party risk.";
+          } else if (repairCost > totalClaimCost + (deductible * 0.5)) {
+            // Case 3: Repair cost far above deductible/claim cost
+            assessment = "This may lean toward filing a claim, especially if the repair cost is much higher than your deductible.";
+          } else {
+            // Edge case where costs are similar
+            assessment = "The costs are relatively close. This is an educational estimate only. Consider your comfort level with out-of-pocket expenses versus potential long-term premium impacts.";
+          }
+        }
+
+        // Add older vehicle nuance
+        if (vehicleAge === 'older' && repairCost > 2000 && !isInjuryCase && !isThirdPartyCase) {
+          assessment += " For older vehicles, even moderate repair costs can sometimes lead to total loss discussions. Consider checking an educational ACV benchmark before assuming the vehicle will be repaired.";
+        }
+
+        const html = `
+          <div class="result-card">
+            <h3>Estimated Tradeoff</h3>
+            <div class="result-metric">
+              <span>Estimated Pay Out of Pocket:</span>
+              <strong>${formatCurrency(outOfPocketCost)}</strong>
+            </div>
+            <div class="result-metric">
+              <span>Estimated Claim Cost Over Time:</span>
+              <strong>${totalClaimText}</strong>
+            </div>
+            <div class="result-metric" style="border-bottom: 2px solid var(--border-color);">
+              <span>Immediate Deductible:</span>
+              <span>${formatCurrency(deductible)}</span>
+            </div>
+            <div class="result-metric" style="border-bottom: 2px solid var(--border-color); padding-top: 12px;">
+              <span>Premium Impact:</span>
+              <span>${premiumImpactText}</span>
+            </div>
+            
+            <div class="result-assessment">
+              <strong>Assessment:</strong> ${assessment}
+            </div>
+
+            <div class="disclaimer-box">
+              This calculator is for educational purposes only. It does not determine coverage, fault, claim eligibility, or premium changes. Actual outcomes can vary by insurer, policy wording, province, claim history, and circumstances.
+            </div>
+          </div>
+        `;
+
+        output.innerHTML = html;
+        output.style.display = 'block';
+        
+        // Scroll to results smoothly
+        output.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+      
+      // Allow enter key to trigger calculation
+      document.getElementById('claim-calculator').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          calcBtn.click();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
