@@ -581,6 +581,51 @@ function estimate() {
   }
   value *= provinceMultiplier;
 
+  // STACKING ORDER: Step 6b - Condition Adjustment
+  let conditionMultiplier = 1.0;
+  let conditionNet = 0;
+  let conditionText = "Condition adjustment: neutral";
+  let hasConditionInput = false;
+  let isRebuilt = false;
+
+  const condExterior = document.getElementById("cond-exterior");
+  const condInterior = document.getElementById("cond-interior");
+  const condSeats = document.getElementById("cond-seats");
+  const condTires = document.getElementById("cond-tires");
+  const condMechanical = document.getElementById("cond-mechanical");
+  const condAccident = document.getElementById("cond-accident");
+
+  if (condExterior && condInterior && condSeats && condTires && condMechanical && condAccident) {
+    hasConditionInput = true;
+    const vExt = parseFloat(condExterior.value) || 0;
+    const vInt = parseFloat(condInterior.value) || 0;
+    const vSeat = parseFloat(condSeats.value) || 0;
+    const vTire = parseFloat(condTires.value) || 0;
+    const vMech = parseFloat(condMechanical.value) || 0;
+    const vAcc = parseFloat(condAccident.value) || 0;
+    
+    let totalConditionAdj = vExt + vInt + vSeat + vTire + vMech + vAcc;
+    
+    // Apply caps
+    if (vAcc === -0.20) { // Rebuilt/Salvage
+      isRebuilt = true;
+      if (totalConditionAdj < -0.25) totalConditionAdj = -0.25;
+    } else {
+      if (totalConditionAdj < -0.18) totalConditionAdj = -0.18;
+    }
+    if (totalConditionAdj > 0.03) totalConditionAdj = 0.03;
+    
+    conditionNet = totalConditionAdj;
+    conditionMultiplier = 1 + conditionNet;
+    value *= conditionMultiplier;
+    
+    if (conditionNet < 0) {
+      conditionText = `Condition adjustment: ${Math.round(conditionNet * 100)}% based on reported wear`;
+    } else if (conditionNet > 0) {
+      conditionText = `Condition adjustment: +${Math.round(conditionNet * 100)}% based on reported condition`;
+    }
+  }
+
   // STACKING ORDER: Step 7 - Refined Deterministic Jitter (±2%)
   const jitterInput = `${year}${make}${model}${mileage}${province}`;
   let hash = 0;
@@ -761,8 +806,21 @@ function estimate() {
 
       <div class='result-meta'><span>Vehicle:</span> <strong>${year} ${make} ${model}</strong></div>
       <div class='result-meta'><span>Mileage:</span> <strong>${Number(mileage).toLocaleString("en-CA")} km</strong></div>
+      ${hasConditionInput ? `
+      <div class='result-meta' style="margin-top: 8px;">
+        <span style="font-weight: 500; color: var(--text-dark);">${conditionText}</span>
+        <div style="font-size: 0.75rem; color: var(--text-light); margin-top: 4px; line-height: 1.4;">
+          Condition inputs are self-reported and meant only to make the educational estimate more realistic. Actual valuations may weigh condition differently.
+        </div>
+      </div>
+      ` : ''}
+      ${isRebuilt ? `
+      <div class='result-note' style="margin-top: 8px; font-size: 0.85rem; color: #b91c1c; background: #fef2f2; padding: 10px; border-radius: 6px; border: 1px solid #fecaca;">
+        Rebuilt or salvage history can materially affect market value, and this estimate may be less reliable for branded vehicles.
+      </div>
+      ` : ''}
       
-      <div class='insurer-comparison'>
+      <div class='insurer-comparison' style="margin-top: 20px;">
         <div class='insurer-label'>Typical insurer valuation range</div>
         <div class='insurer-value'>${insurerRangeStr}</div>
         <div class='insurer-note'>*Market comparison benchmark for settlement review.</div>

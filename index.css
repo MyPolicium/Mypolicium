@@ -2231,3 +2231,33 @@ html {
   50% { transform: scale(1.2); opacity: 0.4; }
   100% { transform: scale(0.8); opacity: 0.2; }
 }
+
+/* Calculator Condition Section */
+.condition-section {
+  margin-bottom: 24px;
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: #fafafa;
+}
+.condition-summary {
+  font-weight: 600;
+  color: var(--primary-navy);
+  cursor: pointer;
+  font-size: 1.1rem;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.condition-summary-hint {
+  font-size: 0.8rem;
+  font-weight: normal;
+  color: var(--text-light);
+}
+.condition-description {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 12px;
+  margin-bottom: 16px;
+}

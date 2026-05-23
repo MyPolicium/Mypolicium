@@ -133,17 +133,91 @@
               </select>
             </div>
 
+            <details class="condition-section">
+              <summary class="condition-summary">
+                Vehicle Condition (Optional)
+                <span class="condition-summary-hint">(Click to expand)</span>
+              </summary>
+              <p class="condition-description">Condition can affect market value. Choose the option that best describes your vehicle today.</p>
+
+              <div class="form-group">
+                <label for="cond-exterior">Exterior / Body Condition</label>
+                <select id="cond-exterior">
+                  <option value="0.02">Excellent / Minimal Wear</option>
+                  <option value="0" selected>Slight Wear</option>
+                  <option value="-0.03">Moderate Wear</option>
+                  <option value="-0.07">Heavy Wear</option>
+                  <option value="-0.12">Severe Wear or Damage</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="cond-interior">Interior Condition</label>
+                <select id="cond-interior">
+                  <option value="0.02">Excellent / Minimal Wear</option>
+                  <option value="0" selected>Slight Wear</option>
+                  <option value="-0.03">Moderate Wear</option>
+                  <option value="-0.07">Heavy Wear</option>
+                  <option value="-0.12">Severe Wear or Damage</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="cond-seats">Seats / Upholstery Condition</label>
+                <select id="cond-seats">
+                  <option value="0.02">Excellent / Minimal Wear</option>
+                  <option value="0" selected>Slight Wear</option>
+                  <option value="-0.03">Moderate Wear</option>
+                  <option value="-0.07">Heavy Wear</option>
+                  <option value="-0.12">Severe Wear or Damage</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="cond-tires">Tires Condition</label>
+                <select id="cond-tires">
+                  <option value="0.02">Excellent / Minimal Wear (Strong tread)</option>
+                  <option value="0" selected>Slight Wear (Average tread)</option>
+                  <option value="-0.03">Moderate Wear</option>
+                  <option value="-0.07">Heavy Wear (Near replacement)</option>
+                  <option value="-0.12">Severe Wear or Damage (Mismatched/worn)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="cond-mechanical">Mechanical Condition</label>
+                <select id="cond-mechanical">
+                  <option value="0.02">Excellent / Minimal Wear (Runs well)</option>
+                  <option value="0" selected>Slight Wear</option>
+                  <option value="-0.03">Moderate Wear (Minor issues)</option>
+                  <option value="-0.07">Heavy Wear (Warning lights)</option>
+                  <option value="-0.12">Severe Wear or Damage (Major concerns)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="cond-accident">Accident / Damage History</label>
+                <select id="cond-accident">
+                  <option value="0" selected>No Known Prior Damage</option>
+                  <option value="-0.03">Minor Prior Repairs</option>
+                  <option value="-0.07">Moderate Prior Damage</option>
+                  <option value="-0.12">Major Prior Damage</option>
+                  <option value="-0.20">Rebuilt / Salvage History</option>
+                </select>
+              </div>
+            </details>
+
             <div class="form-group">
               <label for="insurer-offer">
                 Insurer Offer (Optional)
                 <span class="label-help"
-                  title="Enter your current settlement offer to benchmark it against market data.">ⓘ</span>
+                  title="Enter your current settlement offer to benchmark it against this educational estimate.">ⓘ</span>
               </label>
               <input type="text" id="insurer-offer" placeholder="e.g. $15,000">
             </div>
 
             <button type="button" id="estimate-btn" class="btn btn-secondary btn-full">Calculate Free Benchmark</button>
-            <p style="font-size: 0.75rem; color: var(--text-light); text-align: center; margin-top: 16px; margin-bottom: 0;">This tool may store anonymous usage data (such as vehicle details and estimates) to improve accuracy and performance. No personal information is collected.</p>
+            <p style="font-size: 0.75rem; color: var(--text-light); text-align: center; margin-top: 16px; margin-bottom: 0;">This tool provides an educational estimate only. No personal information is required.</p>
           </form>
 
           <!-- Results -->
