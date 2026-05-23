@@ -602,14 +602,15 @@ function estimate() {
     const vSeat = parseFloat(condSeats.value) || 0;
     const vTire = parseFloat(condTires.value) || 0;
     const vMech = parseFloat(condMechanical.value) || 0;
-    const vAcc = parseFloat(condAccident.value) || 0;
+    
+    isRebuilt = condAccident.value === "rebuilt_salvage";
+    const vAcc = isRebuilt ? -0.35 : (parseFloat(condAccident.value) || 0);
     
     let totalConditionAdj = vExt + vInt + vSeat + vTire + vMech + vAcc;
     
     // Apply caps
-    if (vAcc === -0.20) { // Rebuilt/Salvage
-      isRebuilt = true;
-      if (totalConditionAdj < -0.25) totalConditionAdj = -0.25;
+    if (isRebuilt) {
+      if (totalConditionAdj < -0.35) totalConditionAdj = -0.35;
     } else {
       if (totalConditionAdj < -0.18) totalConditionAdj = -0.18;
     }
@@ -619,7 +620,9 @@ function estimate() {
     conditionMultiplier = 1 + conditionNet;
     value *= conditionMultiplier;
     
-    if (conditionNet < 0) {
+    if (isRebuilt) {
+      conditionText = `Condition adjustment: ${Math.round(conditionNet * 100)}% based on rebuilt/salvage history.`;
+    } else if (conditionNet < 0) {
       conditionText = `Condition adjustment: ${Math.round(conditionNet * 100)}% based on reported wear`;
     } else if (conditionNet > 0) {
       conditionText = `Condition adjustment: +${Math.round(conditionNet * 100)}% based on reported condition`;
