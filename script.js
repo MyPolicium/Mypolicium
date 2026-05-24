@@ -980,6 +980,16 @@ function toggleMobileMenu() {
  */
 const ARTICLES = [
   {
+    title: "Ontario Total Loss Settlement Checklist: What to Review Before You Accept",
+    excerpt: "Received a total loss offer in Ontario? Use this practical checklist to review your settlement, verify comparables, and avoid common valuation errors before accepting.",
+    url: "ontario-total-loss-settlement-checklist.html",
+    publishDate: "2026-05-23",
+    createdDate: "2026-05-23",
+    category: "Total Loss & Vehicle Value",
+    featured: false,
+    tags: ["total-loss", "acv", "claims-process"]
+  },
+  {
     title: "What Is Subrogation in Car Insurance Claims?",
     excerpt: "Learn what subrogation means in car insurance, how insurers recover costs from at-fault drivers, and how you might get your deductible back.",
     url: "what-is-subrogation-insurance.html",
