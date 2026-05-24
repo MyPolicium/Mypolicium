@@ -790,6 +790,37 @@ function estimate() {
       `;
     }
 
+    const googleSearchQuery = encodeURIComponent(`${year} ${make} ${model} for sale ${province} used car`);
+    const googleSearchUrl = `https://www.google.ca/search?q=${googleSearchQuery}`;
+    
+    const comparableFinderHtml = `
+      <div class="comparable-finder-box" style="margin-top: 24px; margin-bottom: 24px; padding: 16px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background-color: #f8fafc;">
+        <h4 style="margin-top: 0; margin-bottom: 6px; font-size: 1rem; color: var(--primary-navy);">Research Comparable Vehicles</h4>
+        <p style="font-size: 0.85rem; color: var(--text-dark); margin-bottom: 16px; line-height: 1.4;">
+          Sanity-check this educational estimate by manually reviewing similar local listings. Look for matching year, make, model, trim, mileage, and condition.
+        </p>
+        
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px;">
+          <a href="${googleSearchUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="text-align: left; background-color: white; padding: 10px; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; border: 1px solid #cbd5e1;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            Search Google for ${year} ${make} ${model}
+          </a>
+          <a href="https://www.autotrader.ca/" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="text-align: left; background-color: white; padding: 10px; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; border: 1px solid #cbd5e1;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            Search AutoTrader Canada
+          </a>
+          <a href="https://www.kijijiautos.ca/" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="text-align: left; background-color: white; padding: 10px; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; border: 1px solid #cbd5e1;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            Search Kijiji Autos
+          </a>
+        </div>
+
+        <div style="background-color: #fffbeb; border-left: 3px solid #f59e0b; padding: 10px; border-radius: 0 4px 4px 0; color: #92400e; font-size: 0.8rem; line-height: 1.4;">
+          <strong>Caution:</strong> Dealer asking prices are not always selling prices. An unusually high listing does not automatically represent the vehicle's market value.
+        </div>
+      </div>
+    `;
+
     const finalHtml = `
       <div class='result-title'>Estimated Fair Market Value Range</div>
       <div class='result-range'>${resultRange}</div>
@@ -830,6 +861,8 @@ function estimate() {
       </div>
 
       ${warningBoxHeader}
+      
+      ${comparableFinderHtml}
 
       <div class="result-cta-group">
         <a href="negotiate-total-loss.html" class="btn btn-primary btn-full" style="text-align: center; text-decoration: none;">Learn how to negotiate this value →</a>
