@@ -1290,7 +1290,37 @@ const ARTICLES = [
     createdDate: "2026-05-08",
     category: "Total Loss & Vehicle Value",
     featured: false,
-    tags: ["acv", "total-loss"]
+    tags: ["acv", "total-loss"]  },
+  {
+    title: "What Happens After a Car Accident in Ontario?",
+    excerpt: "A complete guide to navigating car accident claims in Ontario. Understand the DCPD system, no-fault rules, and when to use Collision Reporting Centres.",
+    url: "car-accident-claims-ontario.html",
+    publishDate: "2026-05-15",
+    createdDate: "2026-05-15",
+    category: "Ontario Auto Insurance",
+    featured: false,
+    tags: ["dcpd", "claims-process"]
+  },
+  {
+    title: "Complete Guide to Total Loss Claims: Valuation, Process, and Negotiation",
+    excerpt: "The master guide to navigating a total loss auto claim. Understand how insurers calculate actual cash value, what happens to your vehicle, and how to effectively negotiate a fair settlement.",
+    url: "guide-total-loss-claims.html",
+    publishDate: "2026-05-10",
+    createdDate: "2026-05-10",
+    category: "Total Loss & Vehicle Value",
+    featured: true,
+    isPillar: true,
+    tags: ["total-loss", "acv", "claims-process"]
+  },
+  {
+    title: "How Long Does a Total Loss Claim Take in Ontario?",
+    excerpt: "Wondering how long a total loss claim takes in Ontario? Learn the realistic timeline for inspection, valuation, and payout from an experienced insurance adjuster.",
+    url: "how-long-total-loss-claim-ontario.html",
+    publishDate: "2026-05-12",
+    createdDate: "2026-05-12",
+    category: "Ontario Auto Insurance",
+    featured: false,
+    tags: ["total-loss", "claims-process"]
   }
 ];
 
