@@ -1013,6 +1013,16 @@ function toggleMobileMenu() {
  */
 const ARTICLES = [
   {
+    title: "What Happens If Repairs Cost More Than Your Car Is Worth?",
+    excerpt: "Many drivers assume a vehicle will be repaired because the damage looks manageable. But once hidden damage, supplements, and structural repairs are considered, the repair economics may change.",
+    url: "repairs-cost-more-than-car-worth.html",
+    publishDate: "2026-05-29",
+    createdDate: "2026-05-29",
+    category: "Total Loss & Vehicle Value",
+    featured: false,
+    tags: ["total-loss", "acv", "repair-process"]
+  },
+  {
     title: "Ontario Total Loss Settlement Checklist: What to Review Before You Accept",
     excerpt: "Received a total loss offer in Ontario? Use this practical checklist to review your settlement, verify comparables, and avoid common valuation errors before accepting.",
     url: "ontario-total-loss-settlement-checklist.html",
@@ -1300,17 +1310,6 @@ const ARTICLES = [
     category: "Ontario Auto Insurance",
     featured: false,
     tags: ["dcpd", "claims-process"]
-  },
-  {
-    title: "Complete Guide to Total Loss Claims: Valuation, Process, and Negotiation",
-    excerpt: "The master guide to navigating a total loss auto claim. Understand how insurers calculate actual cash value, what happens to your vehicle, and how to effectively negotiate a fair settlement.",
-    url: "guide-total-loss-claims.html",
-    publishDate: "2026-05-10",
-    createdDate: "2026-05-10",
-    category: "Total Loss & Vehicle Value",
-    featured: true,
-    isPillar: true,
-    tags: ["total-loss", "acv", "claims-process"]
   },
   {
     title: "How Long Does a Total Loss Claim Take in Ontario?",
