@@ -1013,6 +1013,16 @@ function toggleMobileMenu() {
  */
 const ARTICLES = [
   {
+    title: "How to Find Comparable Vehicles for a Total Loss Settlement",
+    excerpt: "If your total loss offer feels low, comparable vehicles can help support your position. Learn what makes a strong comparable and how to use them properly.",
+    url: "how-to-find-comparable-vehicles-total-loss.html",
+    publishDate: "2026-06-18",
+    createdDate: "2026-06-18",
+    category: "Total Loss & Vehicle Value",
+    featured: false,
+    tags: ["total-loss", "acv", "comparables"]
+  },
+  {
     title: "What Happens If Repairs Cost More Than Your Car Is Worth?",
     excerpt: "Many drivers assume a vehicle will be repaired because the damage looks manageable. But once hidden damage, supplements, and structural repairs are considered, the repair economics may change.",
     url: "repairs-cost-more-than-car-worth.html",
